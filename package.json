@@ -1,0 +1,22 @@
+{
+  "name": "mini-program-monorepo",
+  "private": true,
+  "scripts": {
+    "new:app": "node scripts/new-app.mjs",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "pnpm": {
+    "overrides": {
+      "unconfig": "7.3.2"
+    }
+  },
+  "resolutions": {
+    "bin-wrapper": "npm:bin-wrapper-china",
+    "unconfig": "7.3.2"
+  }
+}
