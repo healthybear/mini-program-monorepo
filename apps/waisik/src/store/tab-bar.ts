@@ -1,13 +1,13 @@
-import type { CustomTabBarItem, CustomTabBarItemBadge } from './types'
+import type { CustomTabBarItem, CustomTabBarItemBadge } from '@/config/tab-bar.types'
 import { computed, reactive } from 'vue'
 import { useUserStore } from '@/store/user'
 
-import { tabbarList as _tabbarList, selectedTabbarStrategy, TABBAR_STRATEGY_MAP } from './config'
+import { tabbarList as _tabbarList, selectedTabbarStrategy, TABBAR_STRATEGY_MAP } from '@/config/tab-bar'
 
 /** tabbarList 里面的 path 从 pages.config.ts 得到 */
 const baseTabbarList = reactive<CustomTabBarItem[]>(_tabbarList.map(item => ({
   ...item,
-  pagePath: item.pagePath.startsWith('/') ? item.pagePath : `/${item.pagePath}`, // 统一成 '/' 开头的路径
+  pagePath: item.pagePath.startsWith('/') ? item.pagePath : `/${item.pagePath}`,
 })))
 
 const userRoles = computed(() => {
@@ -38,11 +38,6 @@ export function isPageTabbar(path: string) {
   return tabbarList.value.some(item => item.pagePath === _path)
 }
 
-/**
- * 自定义 tabbar 的状态管理，原生 tabbar 无需关注本文件
- * tabbar 状态，增加 storageSync 保证刷新浏览器时在正确的 tabbar 页面
- * 使用reactive简单状态，而不是 pinia 全局状态
- */
 const tabbarStore = reactive({
   curIdx: uni.getStorageSync('app-tabbar-index') || 0,
   prevIdx: uni.getStorageSync('app-tabbar-index') || 0,
@@ -62,16 +57,13 @@ const tabbarStore = reactive({
       this.setCurIdx(0)
       return
     }
-    // '/' 当做首页
     if (path === '/') {
       this.setCurIdx(0)
       return
     }
     const index = list.findIndex(item => item.pagePath === path)
-    // console.log('tabbarList:', tabbarList)
     if (index === -1) {
       const pagesPathList = getCurrentPages().map(item => item.route.startsWith('/') ? item.route : `/${item.route}`)
-      // console.log(pagesPathList)
       const flag = list.some(item => pagesPathList.includes(item.pagePath))
       if (!flag) {
         this.setCurIdx(0)

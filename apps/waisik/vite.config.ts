@@ -29,6 +29,15 @@ import vitePluginEruda from './scripts/vite-plugin-eruda'
 import { createCopyNativeResourcesPlugin } from './vite-plugins/copy-native-resources'
 import syncManifestPlugin from './vite-plugins/sync-manifest-plugins'
 
+function sharedComponentsResolver(name: string) {
+  if (name === 'SharedTabbar') {
+    return {
+      name: 'Tabbar',
+      from: '@repo/shared/components/tabbar',
+    }
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   // @see https://unocss.dev/
@@ -74,6 +83,7 @@ export default defineConfig(({ command, mode }) => {
         deep: true, // 是否递归扫描子目录，
         directoryAsNamespace: false, // 是否把目录名作为命名空间前缀，true 时组件名为 目录名+组件名，
         dts: 'src/types/components.d.ts', // 自动生成的组件类型声明文件路径（用于 TypeScript 支持）
+        resolvers: [sharedComponentsResolver],
       }),
       UniPages({
         exclude: ['**/components/**/**.*', '**/sections/**/**.*'],
@@ -173,6 +183,7 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': path.join(process.cwd(), './src'),
+        '@shared': path.join(process.cwd(), '../../packages/shared/src'),
         '@img': path.join(process.cwd(), './src/static/images'),
       },
     },

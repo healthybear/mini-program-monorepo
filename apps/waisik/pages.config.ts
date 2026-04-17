@@ -1,5 +1,5 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
-import { tabBar } from './src/tabbar/config'
+import { tabBar } from './src/config/tab-bar'
 
 export default defineUniPages({
   globalStyle: {
@@ -18,7 +18,7 @@ export default defineUniPages({
       '^wd-(.*)': 'wot-design-uni/components/wd-$1/wd-$1.vue',
 },
   },
-  // tabbar 的配置统一在 “./src/tabbar/config.ts” 文件中
+  // tabbar 的配置统一在 “./src/config/tab-bar.ts” 文件中
   subPackages: [{
     root: 'pages-demo',
     pages: [],

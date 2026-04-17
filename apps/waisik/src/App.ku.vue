@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import FgTabbar from '@/tabbar/index.vue'
-import { isPageTabbar } from './tabbar/store'
+import { customTabbarEnable, needHideNativeTabbar, tabbarCacheEnable, tabbarUiTheme } from '@/config/tab-bar'
+import { isPageTabbar, tabbarList, tabbarStore } from '@/store/tab-bar'
+import { getI18nText, setTabbarItem } from '@/utils/tab-bar-i18n'
 import { currRoute } from './utils'
 
 const isCurrentPageTabbar = ref(true)
@@ -16,11 +17,69 @@ onShow(() => {
   else {
     isCurrentPageTabbar.value = isPageTabbar(path)
   }
+  setTabbarItem()
 })
 
 const helloKuRoot = ref('Hello AppKuVue')
 
 const exposeRef = ref('this is form app.Ku.vue')
+
+function handleClickBulge() {
+  uni.showToast({
+    title: '点击了中间的鼓包tabbarItem',
+    icon: 'none',
+  })
+}
+
+function handleTabChange(index: number) {
+  if (index === tabbarStore.curIdx) {
+    return
+  }
+  const list = tabbarList.value
+  if (!list[index]) {
+    return
+  }
+  if (list[index].isBulge) {
+    handleClickBulge()
+    return
+  }
+  const url = list[index].pagePath
+  tabbarStore.setCurIdx(index)
+  if (tabbarCacheEnable) {
+    uni.switchTab({ url })
+  }
+  else {
+    uni.navigateTo({ url })
+  }
+}
+
+// #ifndef MP-WEIXIN || MP-ALIPAY
+onLoad(() => {
+  needHideNativeTabbar
+  && uni.hideTabBar({
+    fail(err) {
+      console.log('hideTabBar fail: ', err)
+    },
+    success(res) {
+      // console.log('hideTabBar success: ', res)
+    },
+  })
+})
+// #endif
+
+// #ifdef MP-ALIPAY
+onMounted(() => {
+  customTabbarEnable
+  && uni.hideTabBar({
+    fail(err) {
+      console.log('hideTabBar fail: ', err)
+    },
+    success(res) {
+      // console.log('hideTabBar success: ', res)
+    },
+  })
+})
+// #endif
 
 defineExpose({
   exposeRef,
@@ -36,6 +95,13 @@ defineExpose({
 
     <KuRootView />
 
-    <FgTabbar v-if="isCurrentPageTabbar" />
+    <SharedTabbar
+      v-if="isCurrentPageTabbar && customTabbarEnable"
+      :items="tabbarList"
+      :current-index="tabbarStore.curIdx"
+      :theme="tabbarUiTheme"
+      :resolve-text="getI18nText"
+      @change="handleTabChange"
+    />
   </view>
 </template>

@@ -13,6 +13,12 @@ import {
 } from 'unocss'
 
 export default defineConfig({
+  content: {
+    filesystem: [
+      './src/**/*.{vue,ts,tsx,js,jsx}',
+      '../../packages/shared/src/**/*.{vue,ts,tsx,js,jsx}',
+    ],
+  },
   presets: [
     presetUni({
       attributify: false,

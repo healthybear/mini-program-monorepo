@@ -3,7 +3,7 @@
  * 路由拦截，通常也是登录拦截
  * 黑、白名单的配置，请看 config.ts 文件， EXCLUDE_LOGIN_PATH_LIST
  */
-import { tabbarStore } from '@/tabbar/store'
+import { tabbarStore } from '@/store/tab-bar'
 import { getLastPage, parseUrlToObj } from '@/utils/index'
 
 export const FG_LOG_ENABLE = false

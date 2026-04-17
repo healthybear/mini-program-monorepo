@@ -1,7 +1,7 @@
 import type { PageMetaDatum, SubPackages } from '@uni-helper/vite-plugin-uni-pages'
 import { isMpWeixin } from '@uni-helper/uni-env'
 import { pages, subPackages } from '@/pages.json'
-import { isPageTabbar } from '@/tabbar/store'
+import { isPageTabbar } from '@/store/tab-bar'
 
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
 

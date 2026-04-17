@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import i18n, { t } from '@/locale/index'
-import { setTabbarItem } from '@/tabbar/i18n'
+import { setTabbarItem } from '@/utils/tab-bar-i18n'
 import { testI18n } from '@/utils/i18n'
 
 definePage({

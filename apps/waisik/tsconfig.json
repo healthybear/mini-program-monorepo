@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "lib": [
       "esnext",
       "dom"
@@ -14,6 +13,12 @@
       ],
       "@img/*": [
         "./src/static/*"
+      ],
+      "@shared/*": [
+        "../../packages/shared/src/*"
+      ],
+      "@repo/shared/*": [
+        "../../packages/shared/src/*"
       ]
     },
     "resolveJsonModule": true,
