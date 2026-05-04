@@ -1,0 +1,22 @@
+{
+  "name": "mini-program-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mini program monorepo using pnpm workspaces",
+  "scripts": {
+    "dev": "pnpm --filter \"./packages/*\" dev",
+    "build": "pnpm --filter \"./packages/*\" build",
+    "test": "pnpm --filter \"./packages/*\" test",
+    "lint": "pnpm --filter \"./packages/*\" lint"
+  },
+  "keywords": [
+    "monorepo",
+    "pnpm",
+    "mini-program"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
