@@ -11,6 +11,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import { designTokens } from './src/config/design-tokens'
 
 export default defineConfig({
   presets: [
@@ -68,8 +69,41 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   shortcuts: [
+    // 布局相关
     {
       center: 'flex justify-center items-center',
+      'flex-center': 'flex justify-center items-center',
+      'flex-col-center': 'flex flex-col justify-center items-center',
+      'flex-between': 'flex justify-between items-center',
+      'flex-around': 'flex justify-around items-center',
+      'flex-start': 'flex justify-start items-center',
+      'flex-end': 'flex justify-end items-center',
+      'flex-col': 'flex flex-col',
+      'flex-wrap': 'flex flex-wrap',
+      'absolute-center': 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      'absolute-lt': 'absolute left-0 top-0',
+      'absolute-rt': 'absolute right-0 top-0',
+      'absolute-lb': 'absolute left-0 bottom-0',
+      'absolute-rb': 'absolute right-0 bottom-0',
+      'fixed-center': 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+    },
+    // 文本相关
+    {
+      'text-ellipsis': 'overflow-hidden whitespace-nowrap text-overflow-ellipsis',
+      'text-ellipsis-2': 'overflow-hidden line-clamp-2',
+      'text-ellipsis-3': 'overflow-hidden line-clamp-3',
+      'text-break': 'break-all whitespace-normal',
+    },
+    // 尺寸相关
+    {
+      'wh-full': 'w-full h-full',
+      'wh-screen': 'w-screen h-screen',
+      'size-full': 'w-full h-full',
+    },
+    // 交互相关
+    {
+      'click-active': 'active:opacity-70 transition-opacity',
+      'hover-scale': 'hover:scale-105 transition-transform',
     },
   ],
   // 动态图标需要在这里配置，或者写在vue页面中注释掉
@@ -84,6 +118,7 @@ export default defineConfig({
     'i-carbon-menu',
   ],
   rules: [
+    // 安全区域
     [
       'p-safe',
       {
@@ -93,17 +128,58 @@ export default defineConfig({
     ],
     ['pt-safe', { 'padding-top': 'env(safe-area-inset-top)' }],
     ['pb-safe', { 'padding-bottom': 'env(safe-area-inset-bottom)' }],
+    ['pl-safe', { 'padding-left': 'env(safe-area-inset-left)' }],
+    ['pr-safe', { 'padding-right': 'env(safe-area-inset-right)' }],
+    ['mt-safe', { 'margin-top': 'env(safe-area-inset-top)' }],
+    ['mb-safe', { 'margin-bottom': 'env(safe-area-inset-bottom)' }],
+    // 1px 边框（解决小程序 0.5px 边框问题）
+    ['border-1px', { border: '1rpx solid currentColor' }],
+    ['border-t-1px', { 'border-top': '1rpx solid currentColor' }],
+    ['border-b-1px', { 'border-bottom': '1rpx solid currentColor' }],
+    ['border-l-1px', { 'border-left': '1rpx solid currentColor' }],
+    ['border-r-1px', { 'border-right': '1rpx solid currentColor' }],
+    // 渐变背景
+    [
+      /^bg-gradient-(.+)$/,
+      ([, colors]) => {
+        const colorList = colors.split('-to-')
+        if (colorList.length === 2) {
+          return {
+            'background-image': `linear-gradient(to right, ${colorList[0]}, ${colorList[1]})`,
+          }
+        }
+      },
+    ],
   ],
   theme: {
     colors: {
-      /** 主题色，用法如: text-primary */
-      primary: 'var(--wot-color-theme,#0957DE)',
+      primary: designTokens.colors.primary,
+      success: designTokens.colors.success,
+      warning: designTokens.colors.warning,
+      danger: designTokens.colors.danger,
+      error: designTokens.colors.error,
+      info: designTokens.colors.info,
+
+      'text-primary': designTokens.colors.textPrimary,
+      'text-secondary': designTokens.colors.textSecondary,
+      'text-placeholder': designTokens.colors.textPlaceholder,
+      'text-disabled': designTokens.colors.textDisabled,
+      'text-inverse': designTokens.colors.textInverse,
+
+      'bg-page': designTokens.colors.bgPage,
+      'bg-card': designTokens.colors.bgCard,
+      'bg-grey': designTokens.colors.bgGrey,
+      'bg-hover': designTokens.colors.bgHover,
+      'bg-mask': designTokens.colors.bgMask,
+
+      'border-light': designTokens.colors.borderLight,
+      'border-base': designTokens.colors.borderBase,
     },
-    fontSize: {
-      /** 提供更小号的字体，用法如：text-2xs */
-      '2xs': ['20rpx', '28rpx'],
-      '3xs': ['18rpx', '26rpx'],
-    },
+    fontSize: designTokens.fontSize,
+    spacing: designTokens.spacing,
+    borderRadius: designTokens.borderRadius,
+    boxShadow: designTokens.boxShadow,
+    zIndex: designTokens.zIndex,
   },
   // windows 系统会报错：[plugin:unocss:transformers:pre] Cannot overwrite a zero-length range - use append Left or prependRight instead.
   // 去掉下面的就正常了
