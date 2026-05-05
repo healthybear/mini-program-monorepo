@@ -1,76 +1,171 @@
 <script lang="ts" setup>
-import SearchBar from '@/components/searchBar/search-bar.vue'
+import AppBar from '@/components/app-bar/index.vue'
+import type { IconConfig } from '@/components/app-bar/types'
 
-const handleMenuClick = () => {
+definePage({
+  style: {
+    navigationStyle: 'custom',
+    navigationBarTitleText: 'AppBar 组件演示',
+  },
+})
+
+const handleSearch = () => {
   uni.showToast({
-    title: '菜单点击',
+    title: '搜索',
     icon: 'none',
   })
 }
 
-const handleMessageClick = () => {
+const handleAdd = () => {
   uni.showToast({
-    title: '消息点击',
+    title: '添加',
     icon: 'none',
   })
 }
+
+const handleFilter = () => {
+  uni.showToast({
+    title: '筛选',
+    icon: 'none',
+  })
+}
+
+const handleSettings = () => {
+  uni.showToast({
+    title: '设置',
+    icon: 'none',
+  })
+}
+
+const handleHelp = () => {
+  uni.showToast({
+    title: '帮助',
+    icon: 'none',
+  })
+}
+
+const handleCustomBack = () => {
+  uni.showModal({
+    title: '提示',
+    content: '确定要返回吗？',
+    success: (res) => {
+      if (res.confirm) {
+        uni.navigateBack()
+      }
+    },
+  })
+}
+
+// 两个图标
+const twoIcons: IconConfig[] = [
+  { icon: 'search', onClick: handleSearch },
+  { icon: 'add', onClick: handleAdd },
+]
+
+// 多个图标（测试溢出）
+const manyIcons: IconConfig[] = [
+  { icon: 'search', onClick: handleSearch },
+  { icon: 'filter', onClick: handleFilter },
+  { icon: 'settings', onClick: handleSettings },
+  { icon: 'help', onClick: handleHelp },
+]
 </script>
 
 <template>
   <view class="demo-page">
+    <!-- 示例1: 仅标题 -->
     <view class="demo-section">
       <view class="section-title">
-        默认配置
+        1. 仅标题
       </view>
-      <SearchBar
-        title="首页"
-        @menu-click="handleMenuClick"
-        @message-click="handleMessageClick"
-      />
+      <AppBar title="首页" />
+      <view class="section-desc">
+        最简单的用法，只显示标题
+      </view>
     </view>
 
+    <!-- 示例2: 带返回按钮 -->
     <view class="demo-section">
       <view class="section-title">
-        自定义标题
+        2. 带返回按钮
       </view>
-      <SearchBar
-        title="我的订单"
-        @menu-click="handleMenuClick"
-        @message-click="handleMessageClick"
-      />
+      <AppBar title="详情页" left-icon="arrow-left" />
+      <view class="section-desc">
+        左侧显示返回按钮，点击默认返回上一页
+      </view>
     </view>
 
+    <!-- 示例3: 自定义返回行为 -->
     <view class="demo-section">
       <view class="section-title">
-        仅显示标题
+        3. 自定义返回行为
       </view>
-      <SearchBar
-        title="设置"
-        :show-menu="false"
-        :show-message="false"
-      />
+      <AppBar title="编辑资料" left-icon="arrow-left" :left-icon-click="handleCustomBack" />
+      <view class="section-desc">
+        自定义返回按钮点击行为（弹出确认对话框）
+      </view>
     </view>
 
+    <!-- 示例4: 带右侧图标 -->
     <view class="demo-section">
       <view class="section-title">
-        无菜单图标
+        4. 带右侧图标（2个）
       </view>
-      <SearchBar
-        title="个人中心"
-        :show-menu="false"
-        @message-click="handleMessageClick"
-      />
+      <AppBar title="消息列表" :right-icons="twoIcons" />
+      <view class="section-desc">
+        右侧显示2个操作图标
+      </view>
     </view>
 
+    <!-- 示例5: 完整配置 -->
     <view class="demo-section">
       <view class="section-title">
-        长标题测试
+        5. 完整配置
       </view>
-      <SearchBar
-        title="这是一个非常长的标题用来测试文本溢出效果"
-        @menu-click="handleMenuClick"
-        @message-click="handleMessageClick"
+      <AppBar title="我的订单" left-icon="arrow-left" :right-icons="twoIcons" />
+      <view class="section-desc">
+        左侧返回按钮 + 标题 + 右侧操作图标
+      </view>
+    </view>
+
+    <!-- 示例6: 溢出菜单（3+图标） -->
+    <view class="demo-section">
+      <view class="section-title">
+        6. 溢出菜单（4个图标）
+      </view>
+      <AppBar title="设置" :right-icons="manyIcons" />
+      <view class="section-desc">
+        超过2个图标时，显示第1个图标 + 更多按钮（⋮）
+      </view>
+    </view>
+
+    <!-- 示例7: 长标题测试 -->
+    <view class="demo-section">
+      <view class="section-title">
+        7. 长标题测试
+      </view>
+      <AppBar
+        title="这是一个非常长的标题用来测试文本溢出效果当标题过长时会自动截断"
+        left-icon="arrow-left"
+        :right-icons="twoIcons"
       />
+      <view class="section-desc">
+        标题过长时自动截断显示省略号
+      </view>
+    </view>
+
+    <!-- 示例8: 固定定位 -->
+    <view class="demo-section">
+      <view class="section-title">
+        8. 固定定位
+      </view>
+      <view class="section-desc mb-16rpx">
+        设置 fixed 属性后，标题栏固定在页面顶部
+      </view>
+      <AppBar title="固定标题栏" left-icon="arrow-left" :right-icons="twoIcons" :fixed="true" />
+      <view class="section-desc mt-120rpx">
+        （此示例标题栏固定在页面顶部）
+      </view>
     </view>
   </view>
 </template>
@@ -89,7 +184,14 @@ const handleMessageClick = () => {
     padding: 0 24rpx 16rpx;
     font-size: 28rpx;
     font-weight: 500;
-    color: #646566;
+    color: #323233;
+  }
+
+  .section-desc {
+    padding: 16rpx 24rpx 0;
+    font-size: 24rpx;
+    color: #969799;
+    line-height: 1.6;
   }
 }
 </style>
