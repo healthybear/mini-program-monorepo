@@ -20,7 +20,9 @@ export interface IconConfig {
 export interface AppBarProps {
   /** 标题文本（必填） */
   title: string
-  /** 左侧图标（Carbon 图标名，如 'arrow-left'） */
+  /** 是否显示返回按钮（默认 false，不显示不占位） */
+  showBackIcon?: boolean
+  /** 左侧图标（Carbon 图标名，如 'arrow-left'，默认 'arrow-left'） */
   leftIcon?: string
   /** 左侧图标点击回调（可选，默认执行 uni.navigateBack()） */
   leftIconClick?: () => void

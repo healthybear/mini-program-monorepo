@@ -8,6 +8,8 @@ defineOptions({
 const props = withDefaults(defineProps<AppBarProps>(), {
   backgroundColor: '#ffffff',
   fixed: false,
+  showBackIcon: false,
+  leftIcon: 'arrow-left',
 })
 
 const emit = defineEmits<AppBarEmits>()
@@ -63,8 +65,8 @@ function handleOverflowClick(index: number, icon: IconConfig) {
     :class="{ 'app-bar-fixed': fixed }"
     :style="{ backgroundColor }"
   >
-    <!-- 左侧图标区域 -->
-    <view v-if="leftIcon" class="left-area">
+    <!-- 左侧图标区域（仅当 showBackIcon 为 true 时显示） -->
+    <view v-if="showBackIcon" class="left-area">
       <view
         class="icon-button w-48rpx h-48rpx flex-center rounded-full active:bg-hover transition-colors"
         @click="handleLeftClick"
@@ -74,7 +76,7 @@ function handleOverflowClick(index: number, icon: IconConfig) {
     </view>
 
     <!-- 标题区域 -->
-    <view class="title-area flex-1 text-ellipsis" :class="{ 'ml-8rpx': leftIcon }">
+    <view class="title-area flex-1 text-ellipsis" :class="{ 'ml-8rpx': showBackIcon }">
       <text class="title-text text-32rpx text-text-primary font-medium">{{ title }}</text>
     </view>
 

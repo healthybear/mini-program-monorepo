@@ -116,6 +116,30 @@ export default defineConfig({
     'i-carbon-chart-line',
     'i-carbon-ibm-watson-language-translator',
     'i-carbon-menu',
+    // AppBar 组件图标
+    'i-carbon-arrow-left',
+    'i-carbon-close',
+    'i-carbon-search',
+    'i-carbon-add',
+    'i-carbon-filter',
+    'i-carbon-settings',
+    'i-carbon-help',
+    'i-carbon-notification',
+    'i-carbon-overflow-menu-vertical',
+    // SearchBar 组件图标
+    'i-carbon-microphone',
+    // 新建记录页面图标
+    'i-carbon-camera',
+    'i-carbon-renew',
+    // 记录详情页面图标
+    'i-carbon-share',
+    'i-carbon-star-filled',
+    'i-carbon-navigation',
+    'i-carbon-edit',
+    'i-carbon-trash-can',
+    'i-carbon-time',
+    // 记录卡片组件图标
+    'i-carbon-restaurant',
   ],
   rules: [
     // 安全区域
