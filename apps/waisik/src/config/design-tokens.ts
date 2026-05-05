@@ -41,14 +41,16 @@ export const designTokens = {
 
   /** 字体大小 */
   fontSize: {
-    '3xs': ['18rpx', '26rpx'],
-    '2xs': ['20rpx', '28rpx'],
+    xxxxs: ['16rpx', '26rpx'],
+    xxxs: ['18rpx', '26rpx'],
+    xxs: ['20rpx', '28rpx'],
     xs: ['24rpx', '32rpx'],
     sm: ['26rpx', '36rpx'],
     base: ['28rpx', '40rpx'],
     lg: ['32rpx', '44rpx'],
     xl: ['36rpx', '48rpx'],
-    '2xl': ['40rpx', '52rpx'],
+    xxl: ['40rpx', '52rpx'],
+    xxxl: ['48rpx', '56rpx'],
   },
 
   /** 间距系统 */

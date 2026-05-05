@@ -1,98 +1,259 @@
-<p align="center">
-  <a href="https://github.com/unibest-tech/unibest">
-    <img width="160" src="./src/static/logo.svg">
-  </a>
-</p>
+# Waisik 小程序
 
-<h1 align="center">
-  <a href="https://github.com/unibest-tech/unibest" target="_blank">unibest - 最好的 uniapp 开发框架</a>
-</h1>
+基于 uni-app 框架开发的跨平台小程序应用，支持微信、支付宝、字节跳动等多个小程序平台以及 H5 和 App。
 
-<div align="center">
-旧仓库 codercup 进不去了，star 也拿不回来，这里也展示一下那个地址的 star.
+## 技术栈
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/codercup/unibest?style=flat&logo=github)](https://github.com/codercup/unibest)
-[![GitHub forks](https://img.shields.io/github/forks/codercup/unibest?style=flat&logo=github)](https://github.com/codercup/unibest)
+- **框架**: uni-app 3.x + Vue 3 + TypeScript
+- **构建工具**: Vite 5
+- **状态管理**: Pinia + pinia-plugin-persistedstate
+- **UI 组件库**: wot-design-uni
+- **样式方案**: UnoCSS + SCSS
+- **网络请求**: Alova
+- **图标**: @iconify/carbon + 自定义 SVG 图标
+- **路由**: @uni-helper/vite-plugin-uni-pages (约定式路由)
+- **布局**: @uni-helper/vite-plugin-uni-layouts
+- **国际化**: vue-i18n
 
-</div>
+## 项目特性
 
-<div align="center">
+- ✅ TypeScript 类型支持
+- ✅ 约定式路由，自动生成 pages.json
+- ✅ 自定义 Tabbar，支持 UnoCSS 图标
+- ✅ 统一设计规范（基于 wot-design-uni）
+- ✅ UnoCSS 原子化 CSS，内置常用快捷类
+- ✅ 组件自动导入
+- ✅ API 自动导入
+- ✅ 多环境配置（development/test/production）
+- ✅ 请求拦截和登录拦截
+- ✅ Pinia 状态持久化
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/feige996/unibest?style=flat&logo=github)](https://github.com/feige996/unibest)
-[![GitHub forks](https://img.shields.io/github/forks/feige996/unibest?style=flat&logo=github)](https://github.com/feige996/unibest)
-[![star](https://gitee.com/feige996/unibest/badge/star.svg?theme=dark)](https://gitee.com/feige996/unibest/stargazers)
-[![fork](https://gitee.com/feige996/unibest/badge/fork.svg?theme=dark)](https://gitee.com/feige996/unibest/members)
-![node version](https://img.shields.io/badge/node-%3E%3D18-green)
-![pnpm version](https://img.shields.io/badge/pnpm-%3E%3D7.30-green)
-![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/feige996/unibest)
-![GitHub License](https://img.shields.io/github/license/feige996/unibest)
+## 目录结构
 
-</div>
+```
+apps/waisik/
+├── env/                          # 环境变量配置
+│   ├── .env.development         # 开发环境
+│   ├── .env.test                # 测试环境
+│   └── .env.production          # 生产环境
+├── scripts/                      # 构建脚本
+├── src/
+│   ├── api/                     # API 接口定义
+│   ├── components/              # 公共组件
+│   ├── config/                  # 配置文件
+│   │   └── design-tokens.ts    # 设计规范配置（唯一数据源）
+│   ├── http/                    # 网络请求封装
+│   ├── pages/                   # 页面
+│   │   ├── index/              # 首页
+│   │   ├── map/                # 附近
+│   │   ├── explore/            # 探店
+│   │   ├── statistical/        # 历程
+│   │   ├── me/                 # 我的
+│   │   └── about/              # 关于
+│   ├── router/                  # 路由配置
+│   ├── static/                  # 静态资源
+│   │   ├── app/icons/          # App 图标
+│   │   ├── images/             # 图片资源
+│   │   └── my-icons/           # 自定义 SVG 图标
+│   ├── store/                   # Pinia 状态管理
+│   ├── tabbar/                  # 自定义 Tabbar
+│   ├── types/                   # 类型定义
+│   ├── utils/                   # 工具函数
+│   ├── App.vue                  # 应用入口
+│   ├── main.ts                  # 主入口文件
+│   ├── manifest.json            # 应用配置（自动生成）
+│   ├── pages.json               # 页面配置（自动生成）
+│   └── uni.scss                 # uni-app 全局样式变量
+├── manifest.config.ts           # manifest 配置源文件
+├── pages.config.ts              # pages 配置源文件
+├── uno.config.ts                # UnoCSS 配置
+├── vite.config.ts               # Vite 配置
+└── package.json
 
-`unibest` —— 最好的 `uniapp` 开发模板，由 `uniapp` + `Vue3` + `Ts` + `Vite5` + `UnoCss` + `wot-ui` + `z-paging` 构成，使用了最新的前端技术栈，无需依靠 `HBuilderX`，通过命令行方式运行 `web`、`小程序` 和 `App`（编辑器推荐 `VSCode`，可选 `webstorm`）。
+```
 
-`unibest` 内置了 `约定式路由`、`layout布局`、`请求封装`、`请求拦截`、`登录拦截`、`UnoCSS`、`i18n多语言` 等基础功能，提供了 `代码提示`、`自动格式化`、`统一配置`、`代码片段` 等辅助功能，让你编写 `uniapp` 拥有 `best` 体验 （ `unibest 的由来`）。
+## 开发指南
 
-![](https://raw.githubusercontent.com/andreasbm/readme/master/screenshots/lines/rainbow.png)
+### 环境要求
 
-<p align="center">
-  <a href="https://unibest.tech/" target="_blank">📖 文档地址(new)</a>
-  <span style="margin:0 10px;">|</span>
-  <a href="https://unibest-tech.github.io/hello-unibest" target="_blank">📱 DEMO 地址</a>
-</p>
+- Node.js >= 20.0.0
+- pnpm >= 9.0.0
 
----
+### 安装依赖
 
-注意旧的地址 [codercup](https://github.com/codercup/unibest) 我进不去了，使用新的 [feige996](https://github.com/feige996/unibest)。PR和 issue 也请使用新地址，否则无法合并。
+在项目根目录执行：
+
+```bash
+pnpm install
+```
+
+### 开发运行
+
+```bash
+# H5 开发
+pnpm dev:h5
+
+# 微信小程序开发
+pnpm dev:mp-weixin
+
+# 支付宝小程序
+pnpm dev:mp-alipay
+
+# 字节跳动小程序
+pnpm dev:mp-toutiao
+
+# App 开发
+pnpm dev:app
+```
+
+### 构建打包
+
+```bash
+# H5 生产构建
+pnpm build:h5:prod
+
+# 微信小程序生产构建
+pnpm build:mp:prod
+
+# App 生产构建
+pnpm build:app:prod
+```
+
+### 多环境运行
+
+```bash
+# 开发环境（默认）
+pnpm dev:mp
+
+# 测试环境
+pnpm dev:mp:test
+
+# 生产环境
+pnpm dev:mp:prod
+```
+
+## 设计规范
+
+项目使用统一的设计规范配置，基于 wot-design-uni 组件库标准。
+
+### 设计 Token 管理
+
+- **唯一数据源**: `src/config/design-tokens.ts`
+- **UnoCSS 配置**: `uno.config.ts` 直接导入 design-tokens.ts
+- **uni-app 变量**: `src/uni.scss` 需手动保持与 design-tokens.ts 一致
+
+### 颜色系统
+
+```typescript
+// 主题色
+primary: "#0957DE";
+
+// 功能色
+success: "#07c160";
+warning: "#ff976a";
+danger: "#ee0a24";
+error: "#ee0a24";
+info: "#1989fa";
+
+// 文本颜色
+textPrimary: "#323233";
+textSecondary: "#646566";
+textPlaceholder: "#c8c9cc";
+
+// 背景颜色
+bgPage: "#f7f8fa";
+bgCard: "#ffffff";
+bgGrey: "#f8f8f8";
+```
+
+### UnoCSS 快捷类
+
+```html
+<!-- 布局 -->
+<view class="flex-center">居中布局</view>
+<view class="flex-between">两端对齐</view>
+<view class="flex-col-center">垂直居中</view>
+
+<!-- 文本 -->
+<text class="text-ellipsis">单行省略</text>
+<text class="text-ellipsis-2">两行省略</text>
+
+<!-- 尺寸 -->
+<view class="wh-full">宽高100%</view>
+
+<!-- 交互 -->
+<view class="click-active">点击效果</view>
+
+<!-- 安全区域 -->
+<view class="pt-safe">顶部安全区</view>
+<view class="pb-safe">底部安全区</view>
+```
+
+## 自定义 Tabbar
+
+项目使用自定义 Tabbar，配置文件：`src/tabbar/config.ts`
+
+### Tabbar 页面
+
+- 首页 (index) - `i-carbon-home`
+- 附近 (map) - `i-carbon-location`
+- 探店 (explore) - `i-carbon-explore`
+- 历程 (statistical) - `i-carbon-chart-line`
+- 我的 (me) - `i-carbon-user`
+
+### 切换 Tabbar 策略
+
+```typescript
+// src/tabbar/config.ts
+export const selectedTabbarStrategy = TABBAR_STRATEGY_MAP.CUSTOM_TABBAR;
+
+// 可选值：
+// NO_TABBAR: 无 tabbar
+// NATIVE_TABBAR: 原生 tabbar
+// CUSTOM_TABBAR: 自定义 tabbar（当前使用）
+```
+
+## 代码规范
+
+- 使用 ESLint 进行代码检查
+- 使用 Prettier 进行代码格式化
+- 提交信息遵循 Conventional Commits 规范
+
+```bash
+# 代码检查
+pnpm lint
+
+# 自动修复
+pnpm lint:fix
+
+# 类型检查
+pnpm type-check
+```
 
 ## 平台兼容性
 
-| H5  | IOS | 安卓 | 微信小程序 | 字节小程序 | 快手小程序 | 支付宝小程序 | 钉钉小程序 | 百度小程序 |
-| --- | --- | ---- | ---------- | ---------- | ---------- | ------------ | ---------- | ---------- |
-| √   | √   | √    | √          | √          | √          | √            | √          | √          |
+| H5  | iOS | Android | 微信小程序 | 支付宝小程序 | 字节小程序 | 百度小程序 |
+| --- | --- | ------- | ---------- | ------------ | ---------- | ---------- |
+| ✅  | ✅  | ✅      | ✅         | ✅           | ✅         | ✅         |
 
-注意每种 `UI框架` 支持的平台有所不同，详情请看各 `UI框架` 的官网，也可以看 `unibest` 文档。
+## 注意事项
 
-## ⚙️ 环境
+1. **环境变量**: 所有环境变量必须以 `VITE_` 开头才能在代码中访问
+2. **静态资源**: 图片等静态资源放在 `src/static` 目录下
+3. **自动生成文件**: `src/manifest.json` 和 `src/pages.json` 由配置文件自动生成，不要手动修改
+4. **UnoCSS 图标**: 动态使用的图标需要添加到 `uno.config.ts` 的 `safelist` 中
+5. **设计规范**: 修改设计 token 时，需同时更新 `design-tokens.ts` 和 `uni.scss`
 
-- node>=18
-- pnpm>=7.30
-- Vue Official>=2.1.10
-- TypeScript>=5.0
+## 相关链接
 
-## 新版分支 
-- main == base
-- base --> base-i18n
-- base-login --> base-login-i18n
+- [uni-app 官方文档](https://uniapp.dcloud.net.cn/)
+- [wot-design-uni 组件库](https://wot-design-uni.pages.dev/)
+- [UnoCSS 文档](https://unocss.dev/)
+- [Pinia 文档](https://pinia.vuejs.org/)
+- [Alova 文档](https://alova.js.org/)
 
-## &#x1F4C2; 快速开始
+## License
 
-执行 `pnpm create unibest` 创建项目
-执行 `pnpm i` 安装依赖
-执行 `pnpm dev` 运行 `H5`
-执行 `pnpm dev:mp` 运行 `微信小程序`
+MIT
 
-## 📦 运行（支持热更新）
-
-- web平台： `pnpm dev:h5`, 然后打开 [http://localhost:9000/](http://localhost:9000/)。
-- weixin平台：`pnpm dev:mp` 然后打开微信开发者工具，导入本地文件夹，选择本项目的`dist/dev/mp-weixin` 文件。
-- APP平台：`pnpm dev:app`, 然后打开 `HBuilderX`，导入刚刚生成的`dist/dev/app` 文件夹，选择运行到模拟器(开发时优先使用)，或者运行的安卓/ios基座。(如果是 `安卓` 和 `鸿蒙` 平台，则不用这个方式，可以把整个unibest项目导入到hbx，通过hbx的菜单来运行到对应的平台。)
-
-## 🔗 发布
-
-- web平台： `pnpm build:h5`，打包后的文件在 `dist/build/h5`，可以放到web服务器，如nginx运行。如果最终不是放在根目录，可以在 `manifest.config.ts` 文件的 `h5.router.base` 属性进行修改。
-- weixin平台：`pnpm build:mp`, 打包后的文件在 `dist/build/mp-weixin`，然后通过微信开发者工具导入，并点击右上角的“上传”按钮进行上传。
-- APP平台：`pnpm build:app`, 然后打开 `HBuilderX`，导入刚刚生成的`dist/build/app` 文件夹，选择发行 - APP云打包。(如果是 `安卓` 和 `鸿蒙` 平台，则不用这个方式，可以把整个unibest项目导入到hbx，通过hbx的菜单来发行到对应的平台。)
-
-## 📄 License
-
-[MIT](https://opensource.org/license/mit/)
-
-Copyright (c) 2025 菲鸽
-
-## 捐赠
-
-<p align='center'>
-<img alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/wepay.png" height="330" style="display:inline-block; height:330px;">
-<img alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/alipay.jpg" height="330" style="display:inline-block; height:330px; margin-left:10px;">
-</p>
+Copyright (c) 2025
