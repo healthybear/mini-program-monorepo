@@ -9,7 +9,8 @@
       "Bash(pnpm list *)",
       "Bash(awk '{print $9}')",
       "Bash(git checkout *)",
-      "Bash(pnpm install *)"
+      "Bash(pnpm install *)",
+      "Bash(git reset *)"
     ],
     "additionalDirectories": [
       "e:\\workspace\\mini-program-monorepo\\apps\\waisik\\.git",
