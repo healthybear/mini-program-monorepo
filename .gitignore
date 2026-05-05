@@ -52,3 +52,5 @@ miniprogram_npm
 # AI tools
 .trae
 .claude
+.cursor
+.codex

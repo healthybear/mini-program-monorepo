@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 definePage({
   style: {
-    navigationBarTitleText: '我的',
+    navigationBarTitleText: '历程',
   },
 })
 </script>

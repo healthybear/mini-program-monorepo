@@ -33,6 +33,24 @@ export const nativeTabbarList: NativeTabBarItem[] = [
   {
     iconPath: 'static/tabbar/personal.png',
     selectedIconPath: 'static/tabbar/personalHL.png',
+    pagePath: 'pages/map/index',
+    text: '附近',
+  },
+  {
+    iconPath: 'static/tabbar/personal.png',
+    selectedIconPath: 'static/tabbar/personalHL.png',
+    pagePath: 'pages/explore/index',
+    text: '探店',
+  },
+  {
+    iconPath: 'static/tabbar/personal.png',
+    selectedIconPath: 'static/tabbar/personalHL.png',
+    pagePath: 'pages/statistical/index',
+    text: '历程',
+  },
+  {
+    iconPath: 'static/tabbar/personal.png',
+    selectedIconPath: 'static/tabbar/personalHL.png',
     pagePath: 'pages/me/me',
     text: '个人',
   },
@@ -62,24 +80,31 @@ export const customTabbarList: CustomTabBarItem[] = [
   //   icon: '/static/tabbar/scan.png',
   //   isBulge: true,
   // },
-  {
-    pagePath: 'pages/about/about',
-    text: '关于',
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
+  // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
     // 2）配置到 unocss.config.ts 的 safelist 中
+  {
+    text: '附近',
+    pagePath: 'pages/map/index',
     iconType: 'unocss',
-    icon: 'i-carbon-menu',
-    // badge: 10,
-    roles: ['admin'],
+    icon: 'i-carbon-location',
   },
   {
-    pagePath: 'pages/me/me',
+    text: '探店',
+    pagePath: 'pages/explore/index',
+    iconType: 'unocss',
+    icon: 'i-carbon-explore',
+  },
+  {
+    text: '历程',
+    pagePath: 'pages/statistical/index',
+    iconType: 'unocss',
+    icon: 'i-carbon-chart-line',
+  },
+  {
     text: '我的',
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
-    // 2）配置到 unocss.config.ts 的 safelist 中
+    pagePath: 'pages/me/me',
     iconType: 'unocss',
     icon: 'i-carbon-user',
-    // badge: 10,
   },
 
   // 其他类型演示
