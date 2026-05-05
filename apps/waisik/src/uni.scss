@@ -2,10 +2,10 @@
 /**
  * uni-app 样式变量配置
  *
- * ⚠️ 重要：此文件的值应与 src/config/design-tokens.ts 保持一致
- * 唯一数据源：src/config/design-tokens.ts
+ * 此文件定义 uni-app 框架所需的 SCSS 变量（编译时使用）
+ * UnoCSS 配置使用 src/config/design-tokens.ts
  *
- * 如需修改样式变量，请修改 design-tokens.ts，然后运行 pnpm generate:scss 同步到此文件
+ * ⚠️ 两个文件需要保持值一致，统一使用 wot-design-uni 规范
  */
 
 /* 颜色变量 */
