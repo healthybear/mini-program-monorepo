@@ -1,13 +1,8 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
     "baseUrl": ".",
-    "module": "esnext",
-    "moduleResolution": "bundler",
     "paths": {
       "@/*": [
         "./src/*"
@@ -16,7 +11,6 @@
         "./src/static/*"
       ]
     },
-    "resolveJsonModule": true,
     "types": [
       "@dcloudio/types",
       "@uni-helper/uni-types",
@@ -28,12 +22,7 @@
       "./src/typings.d.ts",
       "@wot-ui/ui/global"
     ],
-    "allowJs": true,
-    "noImplicitThis": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "outDir": "dist"
   },
   "vueCompilerOptions": {
     "plugins": [

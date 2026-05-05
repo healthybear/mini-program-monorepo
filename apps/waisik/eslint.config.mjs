@@ -1,3 +1,4 @@
+// Extends base monorepo ESLint config
 import uniHelper from '@uni-helper/eslint-config'
 
 export default uniHelper({

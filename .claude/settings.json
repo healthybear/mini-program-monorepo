@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm --version)"
+      "Bash(pnpm --version)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "additionalDirectories": [
+      "e:\\workspace\\mini-program-monorepo\\apps\\waisik\\.git",
+      "E:\\workspace\\mini-program-monorepo\\apps\\waisik\\.husky"
     ]
   }
 }

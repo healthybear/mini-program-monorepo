@@ -2,10 +2,19 @@
 node_modules
 .pnpm-store
 
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 # Build outputs
 dist
 build
-*.log
+*.local
 
 # Environment variables
 .env
@@ -17,6 +26,13 @@ build
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea
+.cursor
+.hbuilderx
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 *.swp
 *.swo
 *~
@@ -25,6 +41,14 @@ build
 .DS_Store
 Thumbs.db
 
+# Cache
+.stylelintcache
+.eslintcache
+
 # Mini program
 miniprogram_npm
 .miniprogram
+
+# AI tools
+.trae
+.claude
