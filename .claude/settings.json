@@ -3,7 +3,13 @@
     "allow": [
       "Bash(pnpm --version)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Read(//e/e/workspace/mini-program-monorepo/apps/waisik/**)",
+      "Bash(git check-ignore *)",
+      "Bash(pnpm list *)",
+      "Bash(awk '{print $9}')",
+      "Bash(git checkout *)",
+      "Bash(pnpm install *)"
     ],
     "additionalDirectories": [
       "e:\\workspace\\mini-program-monorepo\\apps\\waisik\\.git",
