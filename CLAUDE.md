@@ -101,6 +101,74 @@ chore: upgrade dependencies
 - **Trailing Commas:** Yes (ES5+)
 - **Semicolons:** No (rely on ASI)
 
+### Code Comments Guidelines
+
+**注释原则：**
+
+- **默认不写注释**：优先通过清晰的命名和代码结构表达意图
+- **只在必要时添加注释**：解释 WHY（为什么这样做），而非 WHAT（做了什么）
+- **使用中文注释**：项目团队使用中文，注释也应使用中文
+
+**何时需要注释：**
+
+✅ **复杂业务逻辑**：非显而易见的业务规则或算法
+✅ **临时方案/Workaround**：解释为什么使用临时方案，以及未来的改进方向
+✅ **性能优化**：说明优化的原因和权衡
+✅ **外部依赖的特殊用法**：第三方库的非常规使用方式
+✅ **公共 API/工具函数**：使用 JSDoc 格式，说明参数、返回值、用法示例
+✅ **类型定义**：复杂的 TypeScript 类型需要说明用途
+
+**何时不需要注释：**
+
+❌ **重复代码内容**：`// 设置用户名` 这种注释毫无价值
+❌ **显而易见的逻辑**：`if (user) { ... }` 不需要注释"如果用户存在"
+❌ **过时的注释**：代码改了但注释没改，误导性极强
+❌ **注释掉的代码**：使用 Git 管理历史，不要留注释代码
+
+**注释格式：**
+
+```typescript
+// 单行注释：简短说明
+
+/**
+ * 函数/类的 JSDoc 注释
+ * @param name - 参数说明
+ * @returns 返回值说明
+ */
+
+// 复杂逻辑的多行注释：
+// 1. 第一步做什么
+// 2. 第二步做什么
+// 3. 为什么这样做
+```
+
+**示例：**
+
+```typescript
+// ❌ 不好的注释
+function getUserName(user: User) {
+  // 返回用户名
+  return user.name;
+}
+
+// ✅ 好的注释（或者不需要注释）
+function getUserName(user: User) {
+  return user.name;
+}
+
+// ✅ 需要注释的场景
+function refreshToken() {
+  // 使用队列机制防止并发刷新 token
+  // 多个请求同时 401 时，只发起一次刷新请求
+  if (refreshing) {
+    return new Promise((resolve) => {
+      taskQueue.push(resolve);
+    });
+  }
+  // ...
+}
+```
+
 ## Working with AI Assistants
 
 ### What to Do

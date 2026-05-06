@@ -7,20 +7,20 @@ import VueHook from 'alova/vue'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ContentTypeEnum, ResultEnum, ShowMessage } from './tools/enum'
 
-// 配置动态Tag
 export const API_DOMAINS = {
   DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
   SECONDARY: import.meta.env.VITE_SERVER_BASEURL_SECONDARY,
 }
 
 /**
- * 创建请求实例
+ * alova 的 token 认证配置
+ * 当 token 过期时自动刷新
  */
 const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthentication<
   typeof VueHook,
   typeof uniappRequestAdapter
 >({
-  // 如果下面拦截不到，请使用 refreshTokenOnSuccess by 群友@琛
+  // 判断是否需要刷新 token（响应状态码为 401）
   refreshTokenOnError: {
     isExpired: (error) => {
       return error.response?.status === ResultEnum.Unauthorized
@@ -40,6 +40,7 @@ const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthenticati
 
 /**
  * alova 请求实例
+ * 基于 uni-app 适配器，支持 Vue 3 响应式
  */
 const alovaInstance = createAlova({
   baseURL: API_DOMAINS.DEFAULT,
@@ -48,7 +49,6 @@ const alovaInstance = createAlova({
   statesHook: VueHook,
 
   beforeRequest: onAuthRequired((method) => {
-    // 设置默认 Content-Type
     method.config.headers = {
       ContentType: ContentTypeEnum.JSON,
       Accept: 'application/json, text/plain, */*',
@@ -58,16 +58,14 @@ const alovaInstance = createAlova({
     const { config } = method
     const ignoreAuth = !config.meta?.ignoreAuth
     console.log('ignoreAuth===>', ignoreAuth)
-    // 处理认证信息   自行处理认证问题
     if (ignoreAuth) {
       const token = 'getToken()'
       if (!token) {
         throw new Error('[请求错误]：未登录')
       }
-      // method.config.headers.token = token;
     }
 
-    // 处理动态域名
+    // 支持动态切换 API 域名
     if (config.meta?.domain) {
       method.baseURL = config.meta.domain
       console.log('当前域名', method.baseURL)
@@ -83,12 +81,10 @@ const alovaInstance = createAlova({
       errMsg,
     } = response as UniNamespace.RequestSuccessCallbackResult
 
-    // 处理特殊请求类型（上传/下载）
     if (requestType === 'upload' || requestType === 'download') {
       return response
     }
 
-    // 处理 HTTP 状态码错误
     if (statusCode !== 200) {
       const errorMessage = ShowMessage(statusCode) || `HTTP请求错误[${statusCode}]`
       console.error('errorMessage===>', errorMessage)
@@ -99,9 +95,8 @@ const alovaInstance = createAlova({
       throw new Error(`${errorMessage}：${errMsg}`)
     }
 
-    // 处理业务逻辑错误
     const { code, message, data } = rawData as IResponse
-    // 0和200当做成功都很普遍，这里直接兼容两者，见 ResultEnum
+    // 兼容业务码 0 和 200 两种成功状态
     if (code !== ResultEnum.Success0 && code !== ResultEnum.Success200) {
       if (config.meta?.toast !== false) {
         uni.showToast({
@@ -111,7 +106,6 @@ const alovaInstance = createAlova({
       }
       throw new Error(`请求错误[${code}]：${message}`)
     }
-    // 处理成功响应，返回业务数据
     return data
   }),
 })
