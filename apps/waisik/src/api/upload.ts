@@ -10,7 +10,7 @@ export function uploadImage(file: File) {
   const formData = new FormData()
   formData.append('image', file)
 
-  return http.post<IUploadImageResponse>('/upload/image', formData, {
+  return http.post<IUploadImageResponse>('/api/v1/waisik/upload/image', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -25,7 +25,7 @@ export function uploadImage(file: File) {
 export function uploadImageMiniProgram(filePath: string) {
   return new Promise<IUploadImageResponse>((resolve, reject) => {
     uni.uploadFile({
-      url: `${http.defaults.baseURL}/upload/image`,
+      url: `${http.defaults.baseURL}/api/v1/waisik/upload/image`,
       filePath,
       name: 'image',
       header: {
@@ -36,7 +36,8 @@ export function uploadImageMiniProgram(filePath: string) {
         if (res.statusCode === 200) {
           const data = JSON.parse(res.data)
           resolve(data)
-        } else {
+        }
+        else {
           reject(new Error('上传失败'))
         }
       },
@@ -61,12 +62,13 @@ export function chooseAndUploadImages(count: number = 9) {
       success: async (res) => {
         try {
           const uploadPromises = res.tempFilePaths.map(filePath =>
-            uploadImageMiniProgram(filePath)
+            uploadImageMiniProgram(filePath),
           )
           const results = await Promise.all(uploadPromises)
           const urls = results.map(result => result.url)
           resolve(urls)
-        } catch (error) {
+        }
+        catch (error) {
           reject(error)
         }
       },

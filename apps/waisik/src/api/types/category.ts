@@ -3,12 +3,14 @@
  * 分类相关接口类型定义
  */
 
+import type { EntityStatus } from './common'
+
 export interface ICategory {
-  id: string
+  _id: string
   name: string
   icon?: string
   sort: number
-  status: 'active' | 'inactive'
+  status: EntityStatus
   createdAt: string
   updatedAt: string
 }

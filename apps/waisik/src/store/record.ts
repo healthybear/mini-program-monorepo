@@ -1,4 +1,4 @@
-import type { ICreateExploreRecordDto, IExploreRecord, IExploreRecordListQuery, IUpdateExploreRecordDto } from '@/api/types/record'
+import type { ICreateExploreRecordDto, IExploreRecord, IExploreRecordDetail, IExploreRecordListQuery, IUpdateExploreRecordDto } from '@/api/types/record'
 import { createRecord, deleteRecord, getRecordDetail, getRecordList, updateRecord } from '@/api/record'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -7,7 +7,7 @@ export const useRecordStore = defineStore(
   'record',
   () => {
     const records = ref<IExploreRecord[]>([])
-    const currentRecord = ref<IExploreRecord | null>(null)
+    const currentRecord = ref<IExploreRecordDetail | null>(null)
     const total = ref(0)
     const currentPage = ref(1)
     const pageSize = ref(10)
@@ -34,17 +34,16 @@ export const useRecordStore = defineStore(
         const query: IExploreRecordListQuery = {
           pageNum: currentPage.value,
           pageSize: pageSize.value,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
+          sortBy: 'latest',
         }
 
         const res = await getRecordList(query)
 
         if (reset) {
-          records.value = res.records
+          records.value = res.list
         }
         else {
-          records.value.push(...res.records)
+          records.value.push(...res.list)
         }
 
         total.value = res.total
@@ -67,7 +66,7 @@ export const useRecordStore = defineStore(
       try {
         const record = await getRecordDetail(id)
         currentRecord.value = record
-        const index = records.value.findIndex(r => r.id === id)
+        const index = records.value.findIndex(r => r._id === id)
         if (index > -1) {
           records.value[index] = record
         }
@@ -101,7 +100,7 @@ export const useRecordStore = defineStore(
     const modifyRecord = async (id: string, data: IUpdateExploreRecordDto) => {
       try {
         const record = await updateRecord(id, data)
-        const index = records.value.findIndex(r => r.id === id)
+        const index = records.value.findIndex(r => r._id === id)
         if (index > -1) {
           records.value[index] = record
         }
@@ -119,7 +118,7 @@ export const useRecordStore = defineStore(
     const removeRecord = async (id: string) => {
       try {
         await deleteRecord(id)
-        const index = records.value.findIndex(r => r.id === id)
+        const index = records.value.findIndex(r => r._id === id)
         if (index > -1) {
           records.value.splice(index, 1)
           total.value -= 1

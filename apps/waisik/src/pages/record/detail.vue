@@ -2,8 +2,6 @@
 import AppBar from '@/components/app-bar/index.vue'
 import type { IconConfig } from '@/components/app-bar/types'
 import { useRecordStore } from '@/store'
-import type { IExploreRecord } from '@/api/types/record'
-
 definePage({
   style: {
     navigationStyle: 'custom',
@@ -25,19 +23,19 @@ const recordData = computed(() => {
   if (!record) return null
 
   return {
-    id: record.id,
-    images: record.photos,
+    id: record._id,
+    images: record.images,
     restaurantName: record.restaurantName,
     foodNames: record.foodName || '',
     rating: record.rating,
     price: record.price?.toString() || '',
-    tags: record.tags.map(t => t.name),
+    tags: record.tags,
     notes: record.content || '',
     location: {
       name: record.restaurantName,
       address: record.restaurantAddress,
-      latitude: 0, // TODO: 需要后端返回经纬度
-      longitude: 0,
+      latitude: record.location?.latitude || 0,
+      longitude: record.location?.longitude || 0,
     },
     distance: 0, // TODO: 根据当前位置计算距离
     updatedAt: new Date(record.updatedAt).toLocaleString('zh-CN', {
@@ -94,27 +92,30 @@ function handleSwiperChange(e: any) {
 
 // 预览图片
 function handlePreviewImage(index: number) {
+  if (!recordData.value) return
   uni.previewImage({
     current: index,
-    urls: recordData.images,
+    urls: recordData.value.images,
   })
 }
 
 // 导航到餐厅
 function handleNavigate() {
+  if (!recordData.value) return
   uni.openLocation({
-    latitude: recordData.location.latitude,
-    longitude: recordData.location.longitude,
-    name: recordData.location.name,
-    address: recordData.location.address,
+    latitude: recordData.value.location.latitude,
+    longitude: recordData.value.location.longitude,
+    name: recordData.value.location.name,
+    address: recordData.value.location.address,
     scale: 15,
   })
 }
 
 // 编辑记录
 function handleEdit() {
+  if (!recordData.value) return
   uni.navigateTo({
-    url: `/pages/record/edit?id=${recordData.id}`,
+    url: `/pages/record/edit?id=${recordData.value.id}`,
   })
 }
 
@@ -197,7 +198,7 @@ onMounted(() => {
 
     <view class="content-container">
       <!-- 1. 图片轮播 -->
-      <view v-if="recordData.images.length > 0" class="image-section">
+      <view v-if="recordData && recordData.images.length > 0" class="image-section">
         <swiper
           class="image-swiper"
           :indicator-dots="true"
@@ -208,7 +209,7 @@ onMounted(() => {
           @change="handleSwiperChange"
         >
           <swiper-item
-            v-for="(image, index) in recordData.images"
+            v-for="(image, index) in recordData?.images"
             :key="index"
             @click="handlePreviewImage(index)"
           >
@@ -216,12 +217,12 @@ onMounted(() => {
           </swiper-item>
         </swiper>
         <view class="image-counter">
-          {{ currentImageIndex + 1 }} / {{ recordData.images.length }}
+          {{ currentImageIndex + 1 }} / {{ recordData?.images.length }}
         </view>
       </view>
 
       <!-- 2. 餐厅信息卡片 -->
-      <view class="info-card">
+      <view v-if="recordData" class="info-card">
         <view class="restaurant-name">
           {{ recordData.restaurantName }}
         </view>
@@ -255,7 +256,7 @@ onMounted(() => {
       </view>
 
       <!-- 3. 个人评价卡片 -->
-      <view class="review-card">
+      <view v-if="recordData" class="review-card">
         <view class="card-title">
           个人评价
         </view>
@@ -269,7 +270,7 @@ onMounted(() => {
       </view>
 
       <!-- 4. 地图卡片 -->
-      <view class="map-card-detail">
+      <view v-if="recordData" class="map-card-detail">
         <view class="map-header-detail">
           <view class="location-info">
             <view class="location-name">

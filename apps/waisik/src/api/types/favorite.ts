@@ -4,31 +4,23 @@
  */
 
 import type { IShop } from './shop'
+import type { IPaginationQuery, IPaginationResponse } from './common'
 
 export interface IFavorite {
-  id: string
-  userId: string
+  _id: string
+  user: string
   shop: IShop
   createdAt: string
 }
 
-export interface IFavoriteListQuery {
-  pageNum: number
-  pageSize: number
-}
+export type IFavoriteListQuery = IPaginationQuery
 
-export interface IFavoriteListResponse {
-  favorites: IFavorite[]
-  total: number
-  pageNum: number
-  pageSize: number
-}
+/**
+ * 收藏列表响应
+ * 后端返回 IPaginationResponse<IFavorite> 格式
+ */
+export type IFavoriteListResponse = IPaginationResponse<IFavorite>
 
 export interface ICreateFavoriteDto {
   shopId: string
-}
-
-export interface IDeleteResponse {
-  success: boolean
-  message: string
 }

@@ -1,6 +1,5 @@
 import type {
   ICreateShopDto,
-  IDeleteResponse,
   IShop,
   IShopDetail,
   IShopListQuery,
@@ -15,7 +14,7 @@ import { http } from '@/http/http'
  * @returns Promise<IShopListResponse> 店铺列表
  */
 export function getShopList(params: IShopListQuery) {
-  return http.get<IShopListResponse>('/shops', { params })
+  return http.get<IShopListResponse>('/api/v1/waisik/shops', { params })
 }
 
 /**
@@ -24,7 +23,7 @@ export function getShopList(params: IShopListQuery) {
  * @returns Promise<IShopDetail> 店铺详情（包含标签统计、收藏和点赞状态）
  */
 export function getShopDetail(id: string) {
-  return http.get<IShopDetail>(`/shops/${id}`)
+  return http.get<IShopDetail>(`/api/v1/waisik/shops/${id}`)
 }
 
 /**
@@ -33,7 +32,7 @@ export function getShopDetail(id: string) {
  * @returns Promise<IShop> 创建的店铺
  */
 export function createShop(data: ICreateShopDto) {
-  return http.post<IShop>('/shops', data)
+  return http.post<IShop>('/api/v1/waisik/shops', data)
 }
 
 /**
@@ -43,14 +42,14 @@ export function createShop(data: ICreateShopDto) {
  * @returns Promise<IShop> 更新后的店铺
  */
 export function updateShop(id: string, data: IUpdateShopDto) {
-  return http.put<IShop>(`/shops/${id}`, data)
+  return http.put<IShop>(`/api/v1/waisik/shops/${id}`, data)
 }
 
 /**
  * 删除店铺
  * @param id 店铺ID
- * @returns Promise<IDeleteResponse> 删除结果
+ * @returns Promise<null> 删除成功返回 null
  */
 export function deleteShop(id: string) {
-  return http.delete<IDeleteResponse>(`/shops/${id}`)
+  return http.delete<null>(`/api/v1/waisik/shops/${id}`)
 }

@@ -1,6 +1,5 @@
 import type {
   ICreateFavoriteDto,
-  IDeleteResponse,
   IFavoriteListQuery,
   IFavoriteListResponse,
 } from './types/favorite'
@@ -12,7 +11,7 @@ import { http } from '@/http/http'
  * @returns Promise<IFavoriteListResponse> 收藏列表
  */
 export function getFavoriteList(params: IFavoriteListQuery) {
-  return http.get<IFavoriteListResponse>('/favorites', { params })
+  return http.get<IFavoriteListResponse>('/api/v1/waisik/favorites', { params })
 }
 
 /**
@@ -21,14 +20,14 @@ export function getFavoriteList(params: IFavoriteListQuery) {
  * @returns Promise<void>
  */
 export function createFavorite(data: ICreateFavoriteDto) {
-  return http.post<void>('/favorites', data)
+  return http.post<void>('/api/v1/waisik/favorites', data)
 }
 
 /**
  * 取消收藏店铺
  * @param shopId 店铺ID
- * @returns Promise<IDeleteResponse> 删除结果
+ * @returns Promise<null> 删除成功返回 null
  */
 export function deleteFavorite(shopId: string) {
-  return http.delete<IDeleteResponse>(`/favorites/${shopId}`)
+  return http.delete<null>(`/api/v1/waisik/favorites/${shopId}`)
 }

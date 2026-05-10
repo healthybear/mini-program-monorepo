@@ -7,7 +7,7 @@ import { http } from '@/http/http'
  * @returns Promise<ILikeResponse> 点赞结果
  */
 export function createLike(data: ICreateLikeDto) {
-  return http.post<ILikeResponse>('/likes', data)
+  return http.post<ILikeResponse>('/api/v1/waisik/likes', data)
 }
 
 /**
@@ -16,5 +16,5 @@ export function createLike(data: ICreateLikeDto) {
  * @returns Promise<ILikeResponse> 取消点赞结果
  */
 export function deleteLike(params: IDeleteLikeQuery) {
-  return http.delete<ILikeResponse>('/likes', { params })
+  return http.delete<ILikeResponse>('/api/v1/waisik/likes', { params })
 }

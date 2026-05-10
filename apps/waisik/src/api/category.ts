@@ -6,5 +6,5 @@ import { http } from '@/http/http'
  * @returns Promise<ICategoryListResponse> 分类列表
  */
 export function getCategoryList() {
-  return http.get<ICategoryListResponse>('/categories')
+  return http.get<ICategoryListResponse>('/api/v1/waisik/categories')
 }

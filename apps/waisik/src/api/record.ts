@@ -1,7 +1,7 @@
 import type {
   ICreateExploreRecordDto,
-  IDeleteResponse,
   IExploreRecord,
+  IExploreRecordDetail,
   IExploreRecordListQuery,
   IExploreRecordListResponse,
   IUpdateExploreRecordDto,
@@ -14,7 +14,7 @@ import { http } from '@/http/http'
  * @returns Promise<IExploreRecord> 创建的探店记录
  */
 export function createRecord(data: ICreateExploreRecordDto) {
-  return http.post<IExploreRecord>('/explore-records', data)
+  return http.post<IExploreRecord>('/api/v1/waisik/explore-records', data)
 }
 
 /**
@@ -23,16 +23,16 @@ export function createRecord(data: ICreateExploreRecordDto) {
  * @returns Promise<IExploreRecordListResponse> 探店记录列表
  */
 export function getRecordList(params: IExploreRecordListQuery) {
-  return http.get<IExploreRecordListResponse>('/explore-records', { params })
+  return http.get<IExploreRecordListResponse>('/api/v1/waisik/explore-records', { params })
 }
 
 /**
  * 获取探店记录详情
  * @param id 记录ID
- * @returns Promise<IExploreRecord> 探店记录详情
+ * @returns Promise<IExploreRecordDetail> 探店记录详情（包含点赞状态）
  */
 export function getRecordDetail(id: string) {
-  return http.get<IExploreRecord>(`/explore-records/${id}`)
+  return http.get<IExploreRecordDetail>(`/api/v1/waisik/explore-records/${id}`)
 }
 
 /**
@@ -42,14 +42,14 @@ export function getRecordDetail(id: string) {
  * @returns Promise<IExploreRecord> 更新后的探店记录
  */
 export function updateRecord(id: string, data: IUpdateExploreRecordDto) {
-  return http.put<IExploreRecord>(`/explore-records/${id}`, data)
+  return http.put<IExploreRecord>(`/api/v1/waisik/explore-records/${id}`, data)
 }
 
 /**
  * 删除探店记录
  * @param id 记录ID
- * @returns Promise<IDeleteResponse> 删除结果
+ * @returns Promise<null> 删除成功返回 null
  */
 export function deleteRecord(id: string) {
-  return http.delete<IDeleteResponse>(`/explore-records/${id}`)
+  return http.delete<null>(`/api/v1/waisik/explore-records/${id}`)
 }
