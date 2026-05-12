@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { ICreateExploreRecordDto, IExploreTag } from '@/api/types/record'
+import type { ICreateExploreRecordDto } from '@/api/types/record'
 import AppBar from '@/components/app-bar/index.vue'
+import { LocationPicker } from '@/modules/amap'
 import { useRecordStore } from '@/store/record'
 
 definePage({
@@ -49,6 +50,7 @@ const newTagName = ref('')
 
 // 地图相关
 const showMap = ref(false)
+const showLocationPicker = ref(false)
 
 // 选择图片
 function handleChooseImage() {
@@ -120,32 +122,33 @@ function handleAddCustomTag() {
   })
 }
 
-// 选择位置
+// 选择位置（使用高德地图）
 function handleChooseLocation() {
-  uni.chooseLocation({
-    success: (res) => {
-      formData.location = {
-        name: res.name,
-        address: res.address,
-        latitude: res.latitude,
-        longitude: res.longitude,
-      }
-      showMap.value = true
+  showLocationPicker.value = true
+}
 
-      // 询问是否使用位置名称作为餐厅名称
-      if (!formData.restaurantName && res.name) {
-        uni.showModal({
-          title: '提示',
-          content: `是否使用"${res.name}"作为餐厅名称？`,
-          success: (modalRes) => {
-            if (modalRes.confirm) {
-              formData.restaurantName = res.name
-            }
-          },
-        })
-      }
-    },
-  })
+// 位置选择确认
+function handleLocationConfirm(location: any) {
+  formData.location = {
+    name: location.name,
+    address: location.address,
+    latitude: location.latitude,
+    longitude: location.longitude,
+  }
+  showMap.value = true
+
+  // 询问是否使用位置名称作为餐厅名称
+  if (!formData.restaurantName && location.name && location.name !== '当前位置' && location.name !== '选中位置') {
+    uni.showModal({
+      title: '提示',
+      content: `是否使用"${location.name}"作为餐厅名称？`,
+      success: (modalRes) => {
+        if (modalRes.confirm) {
+          formData.restaurantName = location.name
+        }
+      },
+    })
+  }
 }
 
 // 地图标记点击
@@ -196,19 +199,12 @@ async function handleSubmit() {
 
   try {
     // 构建创建记录的数据
-    const tags: IExploreTag[] = formData.tags.map(name => ({
-      name,
-      count: 1,
-    }))
-
     const createData: ICreateExploreRecordDto = {
-      restaurantId: `temp-${Date.now()}`,
-      restaurantName: formData.restaurantName,
-      restaurantAddress: formData.location?.address || '未知地址',
+      shop: `temp-${Date.now()}`,
       foodName: formData.foodNames,
       rating: formData.rating,
       images: formData.images,
-      tags,
+      tags: formData.tags,
       content: formData.notes || undefined,
       price: formData.price ? Number(formData.price) : undefined,
       location: formData.location.name
@@ -437,6 +433,13 @@ async function handleSubmit() {
         </wd-button>
       </view>
     </view>
+
+    <!-- 高德地图选点组件 -->
+    <LocationPicker
+      v-model="showLocationPicker"
+      :default-location="formData.location.latitude ? formData.location : undefined"
+      @confirm="handleLocationConfirm"
+    />
 
     <!-- 添加标签弹窗 -->
     <wd-popup v-model="showAddTag" position="bottom" :safe-area-inset-bottom="true">
