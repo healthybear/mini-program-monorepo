@@ -202,7 +202,13 @@ export async function getCurrentLocation(): Promise<{
         }
       },
       fail: (err) => {
-        reject(new Error(`获取位置失败: ${err.errMsg}`))
+        // H5 环境下需要 HTTPS 才能使用定位
+        const isH5 = typeof window !== 'undefined' && !window.plus && !window.wx
+        const errorMsg = isH5
+          ? '定位失败：H5 环境需要 HTTPS 协议才能使用定位功能，请使用搜索功能选择位置'
+          : `获取位置失败: ${err.errMsg}`
+
+        reject(new Error(errorMsg))
       },
     })
   })

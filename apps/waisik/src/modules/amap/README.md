@@ -38,12 +38,18 @@ amap/
 
 ### 2. 配置 API Key
 
-在项目根目录的 `.env.development` 文件中添加：
+创建本地配置文件 `.env.development.local`（此文件不会提交到 Git）：
 
 ```env
 # 高德地图 Web 服务 API Key
 VITE_AMAP_WEB_SERVICE_KEY=your_key_here
 ```
+
+**注意：**
+
+- `.env.development.local` 文件已在 `.gitignore` 中，不会被提交
+- 不要在 `.env.development` 中直接写入真实的 Key
+- Vite 会自动加载 `.local` 文件并覆盖默认配置
 
 ### 3. 使用示例
 

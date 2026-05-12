@@ -170,9 +170,17 @@ async function handleGetCurrentLocation() {
   catch (error: any) {
     uni.hideLoading()
     console.error('定位失败:', error)
-    uni.showToast({
-      title: error.message || '定位失败',
-      icon: 'none',
+
+    // 检查是否是 H5 HTTPS 错误
+    const isHttpsError = error.message?.includes('HTTPS') || error.message?.includes('secure origins')
+
+    uni.showModal({
+      title: '定位失败',
+      content: isHttpsError
+        ? 'H5 环境需要 HTTPS 协议才能使用定位功能，请使用搜索功能选择位置'
+        : error.message || '定位失败，请使用搜索功能选择位置',
+      showCancel: false,
+      confirmText: '知道了',
     })
   }
 }

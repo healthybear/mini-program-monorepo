@@ -11,11 +11,17 @@
 
 ### 2. 配置 API Key
 
-在 `apps/waisik/env/.env.development` 文件中，将 `YOUR_AMAP_WEB_SERVICE_KEY` 替换为你的真实 Key：
+创建本地配置文件 `apps/waisik/env/.env.development.local`（此文件不会提交到 Git）：
 
 ```env
+# 高德地图 Web 服务 API Key
 VITE_AMAP_WEB_SERVICE_KEY = 'your_real_key_here'
 ```
+
+**注意：**
+
+- `.env.development.local` 文件已在 `.gitignore` 中，不会被提交
+- 不要在 `.env.development` 中直接写入真实的 Key
 
 ### 3. 测试功能
 
