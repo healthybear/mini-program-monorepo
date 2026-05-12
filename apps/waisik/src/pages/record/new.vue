@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import type { ICreateExploreRecordDto, IExploreTag } from '@/api/types/record'
 import AppBar from '@/components/app-bar/index.vue'
 import { useRecordStore } from '@/store/record'
-import type { ICreateExploreRecordDto, IExploreTag } from '@/api/types/record'
 
 definePage({
   style: {
@@ -51,7 +51,7 @@ const newTagName = ref('')
 const showMap = ref(false)
 
 // 选择图片
-const handleChooseImage = () => {
+function handleChooseImage() {
   uni.chooseImage({
     count: 6 - formData.images.length,
     sizeType: ['compressed'],
@@ -63,12 +63,12 @@ const handleChooseImage = () => {
 }
 
 // 删除图片
-const handleDeleteImage = (index: number) => {
+function handleDeleteImage(index: number) {
   formData.images.splice(index, 1)
 }
 
 // 预览图片
-const handlePreviewImage = (index: number) => {
+function handlePreviewImage(index: number) {
   uni.previewImage({
     current: index,
     urls: formData.images,
@@ -76,12 +76,12 @@ const handlePreviewImage = (index: number) => {
 }
 
 // 评分变化
-const handleRatingChange = (e: any) => {
+function handleRatingChange(e: any) {
   formData.rating = e.detail.value
 }
 
 // 切换标签选择
-const toggleTag = (tag: string) => {
+function toggleTag(tag: string) {
   const index = formData.tags.indexOf(tag)
   if (index > -1) {
     formData.tags.splice(index, 1)
@@ -92,7 +92,7 @@ const toggleTag = (tag: string) => {
 }
 
 // 添加自定义标签
-const handleAddCustomTag = () => {
+function handleAddCustomTag() {
   if (!newTagName.value.trim()) {
     uni.showToast({
       title: '请输入标签名称',
@@ -121,7 +121,7 @@ const handleAddCustomTag = () => {
 }
 
 // 选择位置
-const handleChooseLocation = () => {
+function handleChooseLocation() {
   uni.chooseLocation({
     success: (res) => {
       formData.location = {
@@ -149,12 +149,12 @@ const handleChooseLocation = () => {
 }
 
 // 地图标记点击
-const handleMarkerTap = () => {
+function handleMarkerTap() {
   // 可以在这里处理标记点击事件
 }
 
 // 提交表单
-const handleSubmit = async () => {
+async function handleSubmit() {
   // 验证必填项
   if (formData.images.length === 0) {
     uni.showToast({
@@ -211,11 +211,13 @@ const handleSubmit = async () => {
       tags,
       content: formData.notes || undefined,
       price: formData.price ? Number(formData.price) : undefined,
-      location: formData.location.name ? {
-        latitude: formData.location.latitude,
-        longitude: formData.location.longitude,
-        address: formData.location.address,
-      } : undefined,
+      location: formData.location.name
+        ? {
+            latitude: formData.location.latitude,
+            longitude: formData.location.longitude,
+            address: formData.location.address,
+          }
+        : undefined,
     }
 
     // 调用 store 创建记录
@@ -247,7 +249,7 @@ const handleSubmit = async () => {
 
 <template>
   <view class="page-container">
-    <AppBar title="新建探店记录" :show-back-icon="true" fixed "/>
+    <AppBar title="新建探店记录" :show-back-icon="true" " fixed />
 
     <view class="form-container">
       <!-- 1. 照片 -->
