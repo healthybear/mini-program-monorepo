@@ -84,7 +84,7 @@ export function debounce<F extends (...args: any[]) => void>(
   debounceMs: number,
   { signal, edges }: DebounceOptions = {},
 ): DebouncedFunction<F> {
-  let pendingThis: any
+  let pendingThis: unknown
   let pendingArgs: Parameters<F> | null = null
 
   const leading = edges != null && edges.includes('leading')
@@ -138,7 +138,7 @@ export function debounce<F extends (...args: any[]) => void>(
     invoke()
   }
 
-  const debounced = function (this: any, ...args: Parameters<F>) {
+  const debounced = function (this: unknown, ...args: Parameters<F>) {
     if (signal?.aborted) {
       return
     }

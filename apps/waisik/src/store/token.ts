@@ -2,22 +2,29 @@ import type {
   ILoginForm,
 } from '@/api/login'
 import type {
-  IPhoneLoginReq,
   IAuthLoginRes,
+  IPhoneLoginReq,
 } from '@/api/types/login'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue' // 修复：导入 computed
 import {
   login as _login,
   logout as _logout,
+  phoneLogin as _phoneLogin,
   refreshToken as _refreshToken,
   wxLogin as _wxLogin,
-  phoneLogin as _phoneLogin,
   getWxCode,
 } from '@/api/login'
 import { isDoubleTokenRes, isSingleTokenRes } from '@/api/types/login'
 import { isDoubleTokenMode } from '@/utils'
 import { useUserStore } from './user'
+
+// 常量定义
+const MILLISECONDS_PER_SECOND = 1000 // 毫秒转秒
+const DEFAULT_REFRESH_TOKEN_DAYS = 30 // refreshToken 默认过期天数
+const HOURS_PER_DAY = 24
+const MINUTES_PER_HOUR = 60
+const SECONDS_PER_MINUTE = 60
 
 // 初始化状态
 const tokenInfoState = isDoubleTokenMode
@@ -59,15 +66,15 @@ export const useTokenStore = defineStore(
       const now = Date.now()
       if (isSingleTokenRes(val)) {
         // 单token模式
-        const expireTime = now + val.expiresIn * 1000
+        const expireTime = now + val.expiresIn * MILLISECONDS_PER_SECOND
         uni.setStorageSync('accessTokenExpireTime', expireTime)
       }
       else if (isDoubleTokenRes(val)) {
         // 双token模式
-        const accessExpireTime = now + val.expiresIn * 1000
+        const accessExpireTime = now + val.expiresIn * MILLISECONDS_PER_SECOND
         uni.setStorageSync('accessTokenExpireTime', accessExpireTime)
         // 如果后端没有返回 refreshToken 的过期时间，默认设置为 30 天
-        const refreshExpireTime = now + 30 * 24 * 60 * 60 * 1000
+        const refreshExpireTime = now + DEFAULT_REFRESH_TOKEN_DAYS * HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND
         uni.setStorageSync('refreshTokenExpireTime', refreshExpireTime)
       }
     }
@@ -123,7 +130,6 @@ export const useTokenStore = defineStore(
     const login = async (loginForm: ILoginForm) => {
       try {
         const res = await _login(loginForm)
-        console.log('普通登录-res: ', res)
         await _postLogin(res)
         uni.showToast({
           title: '登录成功',
@@ -154,9 +160,7 @@ export const useTokenStore = defineStore(
       try {
         // 获取微信小程序登录的code
         const code = await getWxCode()
-        console.log('微信登录-code: ', code)
         const res = await _wxLogin(code)
-        console.log('微信登录-res: ', res)
         await _postLogin(res)
         uni.showToast({
           title: '登录成功',
@@ -185,7 +189,6 @@ export const useTokenStore = defineStore(
     const phoneLogin = async (loginForm: IPhoneLoginReq) => {
       try {
         const res = await _phoneLogin(loginForm)
-        console.log('手机登录-res: ', res)
         await _postLogin(res)
         uni.showToast({
           title: '登录成功',
@@ -211,7 +214,6 @@ export const useTokenStore = defineStore(
      */
     const logout = async () => {
       try {
-        // TODO 实现自己的退出登录逻辑
         await _logout()
       }
       catch (error) {
@@ -224,7 +226,6 @@ export const useTokenStore = defineStore(
         // 清除存储的过期时间
         uni.removeStorageSync('accessTokenExpireTime')
         uni.removeStorageSync('refreshTokenExpireTime')
-        console.log('退出登录-清除用户信息')
         tokenInfo.value = { ...tokenInfoState }
         uni.removeStorageSync('token')
         const userStore = useUserStore()
@@ -250,7 +251,6 @@ export const useTokenStore = defineStore(
 
         const refreshToken = tokenInfo.value.refreshToken
         const res = await _refreshToken(refreshToken)
-        console.log('刷新token-res: ', res)
         setTokenInfo(res)
         return res
       }
@@ -303,7 +303,6 @@ export const useTokenStore = defineStore(
      * 建议这样使用tokenStore.updateNowTime().hasLogin
      */
     const hasValidLogin = computed(() => {
-      console.log('hasValidLogin', hasLoginInfo.value, !isTokenExpired.value)
       return hasLoginInfo.value && !isTokenExpired.value
     })
 

@@ -11,6 +11,12 @@ definePage({
   },
 })
 
+// 常量定义
+const MAX_IMAGES_COUNT = 6 // 最大图片数量
+const MAX_NOTES_LENGTH = 200 // 备注最大长度
+const MAX_EVALUATION_LENGTH = 500 // 评价最大长度
+const TOAST_DURATION = 2000 // Toast 提示持续时间（毫秒）
+
 const recordStore = useRecordStore()
 
 // 表单数据
@@ -55,7 +61,7 @@ const showLocationPicker = ref(false)
 // 选择图片
 function handleChooseImage() {
   uni.chooseImage({
-    count: 6 - formData.images.length,
+    count: MAX_IMAGES_COUNT - formData.images.length,
     sizeType: ['compressed'],
     sourceType: ['album', 'camera'],
     success: (res) => {
@@ -223,11 +229,11 @@ async function handleSubmit() {
     uni.showToast({
       title: '保存成功',
       icon: 'success',
-      duration: 2000,
+      duration: TOAST_DURATION,
       success: () => {
         setTimeout(() => {
           uni.navigateBack()
-        }, 2000)
+        }, TOAST_DURATION)
       },
     })
   }
@@ -237,7 +243,7 @@ async function handleSubmit() {
     uni.showToast({
       title: '保存失败，请重试',
       icon: 'none',
-      duration: 2000,
+      duration: TOAST_DURATION,
     })
   }
 }
@@ -245,7 +251,7 @@ async function handleSubmit() {
 
 <template>
   <view class="page-container">
-    <AppBar title="新建探店记录" :show-back-icon="true" " fixed />
+    <AppBar title="新建探店记录" :show-back-icon="true" fixed />
 
     <view class="form-container">
       <!-- 1. 照片 -->
@@ -254,7 +260,7 @@ async function handleSubmit() {
           照片
         </view>
         <view class="form-desc">
-          最多上传6张照片
+          最多上传{{ MAX_IMAGES_COUNT }}张照片
         </view>
         <view class="image-grid">
           <view
@@ -269,7 +275,7 @@ async function handleSubmit() {
             </view>
           </view>
           <view
-            v-if="formData.images.length < 6"
+            v-if="formData.images.length < MAX_IMAGES_COUNT"
             class="image-item image-add"
             @click="handleChooseImage"
           >
@@ -302,7 +308,7 @@ async function handleSubmit() {
         <wd-textarea
           v-model="formData.foodNames"
           placeholder="例如：宫保鸡丁、麻婆豆腐、水煮鱼"
-          :maxlength="200"
+          :maxlength="MAX_NOTES_LENGTH"
           show-word-limit
           :rows="3"
         />
@@ -370,7 +376,7 @@ async function handleSubmit() {
         <wd-textarea
           v-model="formData.notes"
           placeholder="分享你的探店体验..."
-          :maxlength="500"
+          :maxlength="MAX_EVALUATION_LENGTH"
           show-word-limit
           :rows="5"
         />

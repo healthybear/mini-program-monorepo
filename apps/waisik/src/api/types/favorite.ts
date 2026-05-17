@@ -3,8 +3,8 @@
  * 收藏相关接口类型定义
  */
 
-import type { IShop } from './shop'
 import type { IPaginationQuery, IPaginationResponse } from './common'
+import type { IShop } from './shop'
 
 export interface IFavorite {
   _id: string

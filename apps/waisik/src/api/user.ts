@@ -1,10 +1,10 @@
+import type { IFavoriteListResponse } from './types/favorite'
+import type { IExploreRecordListResponse } from './types/record'
 import type {
   IUserDetail,
   IUserFavoritesQuery,
   IUserReviewsQuery,
 } from './types/user'
-import type { IExploreRecordListResponse } from './types/record'
-import type { IFavoriteListResponse } from './types/favorite'
 import { http } from '@/http/http'
 
 /**

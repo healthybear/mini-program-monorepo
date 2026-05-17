@@ -2,7 +2,7 @@
  * 在 uniapp 的 RequestOptions 和 IUniUploadFileOptions 基础上，添加自定义参数
  */
 export type CustomRequestOptions = UniApp.RequestOptions & {
-  query?: Record<string, any>
+  query?: Record<string, unknown>
   /** 出错时是否隐藏错误提示 */
   hideErrorToast?: boolean
 } & IUniUploadFileOptions // 添加uni.uploadFile参数类型
@@ -16,23 +16,23 @@ export interface HttpRequestResult<T> {
 }
 
 // 通用响应格式（兼容 msg + message 字段）
-export type IResponse<T = any> = {
+export type IResponse<T = unknown> = {
   code: number
   data: T
   message: string
-  [key: string]: any // 允许额外属性
+  [key: string]: unknown // 允许额外属性
 } | {
   code: number
   data: T
   msg: string
-  [key: string]: any // 允许额外属性
+  [key: string]: unknown // 允许额外属性
 }
 
 // 分页请求参数
 export interface PageParams {
   page: number
   pageSize: number
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // 分页响应数据

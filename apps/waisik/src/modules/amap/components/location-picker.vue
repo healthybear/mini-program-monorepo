@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { AmapPOI } from '../types'
 import { getCurrentLocation, parseLocation, searchPOI } from '../api'
+import { AMAP_CONFIG } from '../config'
 
 export interface LocationPickerProps {
   /** 是否显示选择器 */
@@ -87,7 +88,7 @@ async function handleSearch() {
     const result = await searchPOI({
       keywords: searchKeyword.value,
       city: '全国',
-      offset: 20,
+      offset: AMAP_CONFIG.poiSearch.offset,
     })
 
     searchResults.value = result.pois
@@ -227,7 +228,9 @@ onMounted(() => {
     <view class="location-picker">
       <!-- 头部 -->
       <view class="picker-header">
-        <view class="header-title">选择位置</view>
+        <view class="header-title">
+          选择位置
+        </view>
         <view class="header-actions">
           <view class="action-btn" @click="handleCancel">
             取消
@@ -266,8 +269,12 @@ onMounted(() => {
             class="result-item"
             @click="handleSelectPOI(poi)"
           >
-            <view class="result-name">{{ poi.name }}</view>
-            <view class="result-address">{{ poi.address }}</view>
+            <view class="result-name">
+              {{ poi.name }}
+            </view>
+            <view class="result-address">
+              {{ poi.address }}
+            </view>
           </view>
         </scroll-view>
       </view>
@@ -292,15 +299,23 @@ onMounted(() => {
         <view class="placeholder-icon">
           <view class="i-carbon-location icon-large" />
         </view>
-        <view class="placeholder-text">H5 环境暂不支持地图选点</view>
-        <view class="placeholder-hint">请使用搜索功能选择位置</view>
+        <view class="placeholder-text">
+          H5 环境暂不支持地图选点
+        </view>
+        <view class="placeholder-hint">
+          请使用搜索功能选择位置
+        </view>
       </view>
       <!-- #endif -->
 
       <!-- 选中位置信息 -->
       <view v-if="selectedLocation" class="selected-info">
-        <view class="info-name">{{ selectedLocation.name }}</view>
-        <view class="info-address">{{ selectedLocation.address }}</view>
+        <view class="info-name">
+          {{ selectedLocation.name }}
+        </view>
+        <view class="info-address">
+          {{ selectedLocation.address }}
+        </view>
       </view>
     </view>
   </wd-popup>

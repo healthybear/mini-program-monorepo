@@ -7,6 +7,9 @@ import VueHook from 'alova/vue'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ContentTypeEnum, ResultEnum, ShowMessage } from './tools/enum'
 
+// 常量定义
+const REQUEST_TIMEOUT = 5000 // 请求超时时间（毫秒）
+
 export const API_DOMAINS = {
   DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
   SECONDARY: import.meta.env.VITE_SERVER_BASEURL_SECONDARY,
@@ -45,7 +48,7 @@ const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthenticati
 const alovaInstance = createAlova({
   baseURL: API_DOMAINS.DEFAULT,
   ...AdapterUniapp(),
-  timeout: 5000,
+  timeout: REQUEST_TIMEOUT,
   statesHook: VueHook,
 
   beforeRequest: onAuthRequired((method) => {
@@ -57,7 +60,6 @@ const alovaInstance = createAlova({
 
     const { config } = method
     const ignoreAuth = !config.meta?.ignoreAuth
-    console.log('ignoreAuth===>', ignoreAuth)
     if (ignoreAuth) {
       const token = 'getToken()'
       if (!token) {
@@ -68,7 +70,6 @@ const alovaInstance = createAlova({
     // 支持动态切换 API 域名
     if (config.meta?.domain) {
       method.baseURL = config.meta.domain
-      console.log('当前域名', method.baseURL)
     }
   }),
 

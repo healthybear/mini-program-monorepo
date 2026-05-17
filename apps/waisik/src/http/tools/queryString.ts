@@ -4,7 +4,7 @@
  * @param obj 要序列化的对象
  * @returns 序列化后的查询字符串
  */
-export function stringifyQuery(obj: Record<string, any>): string {
+export function stringifyQuery(obj: Record<string, string | number | boolean | Array<string | number | boolean> | null | undefined>): string {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj))
     return ''
 
@@ -23,7 +23,7 @@ export function stringifyQuery(obj: Record<string, any>): string {
       }
 
       // 处理基本类型
-      return `${encodedKey}=${encodeURIComponent(value)}`
+      return `${encodedKey}=${encodeURIComponent(value as string | number | boolean)}`
     })
     .join('&')
 }

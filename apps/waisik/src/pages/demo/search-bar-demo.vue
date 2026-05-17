@@ -16,43 +16,39 @@ const searchText5 = ref('预设内容')
 const searchText6 = ref('')
 const searchText7 = ref('')
 
-const handleSearch = (value: string) => {
+function handleSearch(value: string) {
   uni.showToast({
     title: `搜索: ${value}`,
     icon: 'none',
   })
 }
 
-const handleFocus = () => {
-  console.log('输入框聚焦')
+function handleBlur() {
+  // 输入框失焦
 }
 
-const handleBlur = () => {
-  console.log('输入框失焦')
-}
-
-const handleClear = () => {
+function handleClear() {
   uni.showToast({
     title: '已清空',
     icon: 'none',
   })
 }
 
-const handleVoiceSearch = () => {
+function handleVoiceSearch() {
   uni.showToast({
     title: '语音搜索',
     icon: 'none',
   })
 }
 
-const handleRightIconClick = () => {
+function handleRightIconClick() {
   uni.showToast({
     title: '右侧图标点击',
     icon: 'none',
   })
 }
 
-const navigateToSearchPage = () => {
+function navigateToSearchPage() {
   uni.showToast({
     title: '跳转到搜索页面',
     icon: 'none',
@@ -120,7 +116,7 @@ const navigateToSearchPage = () => {
         <template #right>
           <view class="flex items-center" style="gap: 8rpx;" @click="handleVoiceSearch">
             <text class="text-24rpx text-text-secondary">语音</text>
-            <view class="w-32rpx h-32rpx bg-primary rounded-full flex-center">
+            <view class="h-32rpx w-32rpx flex-center rounded-full bg-primary">
               <view class="i-carbon-microphone text-24rpx text-white" />
             </view>
           </view>

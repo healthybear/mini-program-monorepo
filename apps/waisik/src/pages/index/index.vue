@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import AppBar from '@/components/app-bar/index.vue'
+import SearchBar from '@/components/search-bar/index.vue'
+import { useRecordStore } from '@/store'
+import Empty from './components/empty.vue'
+
 defineOptions({
   name: 'Home',
 })
@@ -12,19 +18,12 @@ definePage({
   },
 })
 
-import { storeToRefs } from 'pinia'
-import Empty from './components/empty.vue'
-import AppBar from '@/components/app-bar/index.vue'
-import SearchBar from '@/components/search-bar/index.vue'
-import { useRecordStore } from '@/store'
-
 const recordStore = useRecordStore()
 const { records, loading, hasMore } = storeToRefs(recordStore)
 
 const refreshing = ref(false)
 
 onLoad(async () => {
-  console.log('测试 uni API 自动引入: onLoad')
   try {
     await recordStore.fetchRecords(true)
   }
@@ -34,7 +33,7 @@ onLoad(async () => {
   }
 })
 
-const onRefresh = async () => {
+async function onRefresh() {
   refreshing.value = true
   try {
     await recordStore.fetchRecords(true)
@@ -44,19 +43,19 @@ const onRefresh = async () => {
   }
 }
 
-const onLoadMore = async () => {
+async function onLoadMore() {
   if (!loading.value && hasMore.value) {
     await recordStore.fetchRecords(false)
   }
 }
 
-const goToDetail = (id: string) => {
+function goToDetail(id: string) {
   uni.navigateTo({
     url: `/pages/record/detail?id=${id}`,
   })
 }
 
-const goToNew = () => {
+function goToNew() {
   uni.navigateTo({
     url: '/pages/record/new',
   })
@@ -64,7 +63,7 @@ const goToNew = () => {
 </script>
 
 <template>
-  <view class="flex-col wh-full bg-gray-50">
+  <view class="wh-full flex-col bg-gray-50">
     <AppBar title="为食" />
 
     <view class="flex-1 overflow-hidden">
@@ -76,34 +75,34 @@ const goToNew = () => {
         @refresherrefresh="onRefresh"
         @scrolltolower="onLoadMore"
       >
-        <view v-if="records.length === 0 && !loading" class="center wh-full">
+        <view v-if="records.length === 0 && !loading" class="wh-full center">
           <Empty />
         </view>
 
         <view v-else class="p-4 space-y-3">
-          <view class="p-4 bg-white border-t border-gray-100">
+          <view class="border-t border-gray-100 bg-white p-4">
             <SearchBar />
           </view>
           <view
             v-for="record in records"
             :key="record.id"
-            class="bg-white rounded-2 p-3 shadow-sm"
+            class="rounded-2 bg-white p-3 shadow-sm"
             @tap="goToDetail(record.id)"
           >
             <view class="flex items-start gap-3">
               <image
                 v-if="record.images?.[0]"
                 :src="record.images[0]"
-                class="w-20 h-20 rounded-2 flex-shrink-0"
+                class="h-20 w-20 flex-shrink-0 rounded-2"
                 mode="aspectFill"
               />
 
-              <view class="flex-1 min-w-0">
-                <view class="text-base font-medium text-gray-900 mb-1">
+              <view class="min-w-0 flex-1">
+                <view class="mb-1 text-base text-gray-900 font-medium">
                   {{ record.restaurantName }}
                 </view>
 
-                <view class="flex items-center gap-2 mb-2">
+                <view class="mb-2 flex items-center gap-2">
                   <view class="flex items-center">
                     <text
                       v-for="i in 5"
@@ -115,17 +114,17 @@ const goToNew = () => {
                   <text class="text-sm text-gray-600">{{ record.rating }}</text>
                 </view>
 
-                <view v-if="record.tags?.length" class="flex flex-wrap gap-2 mb-2">
+                <view v-if="record.tags?.length" class="mb-2 flex flex-wrap gap-2">
                   <view
                     v-for="tag in record.tags"
                     :key="tag.name"
-                    class="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded"
+                    class="rounded bg-blue-50 px-2 py-0.5 text-xs text-blue-600"
                   >
                     {{ tag.name }}
                   </view>
                 </view>
 
-                <view v-if="record.content" class="text-sm text-gray-600 line-clamp-2 mb-1">
+                <view v-if="record.content" class="line-clamp-2 mb-1 text-sm text-gray-600">
                   {{ record.content }}
                 </view>
 
@@ -136,11 +135,11 @@ const goToNew = () => {
             </view>
           </view>
 
-          <view v-if="loading" class="text-center py-4 text-gray-500">
+          <view v-if="loading" class="py-4 text-center text-gray-500">
             加载中...
           </view>
 
-          <view v-else-if="!hasMore && records.length > 0" class="text-center py-4 text-gray-400">
+          <view v-else-if="!hasMore && records.length > 0" class="py-4 text-center text-gray-400">
             没有更多了
           </view>
         </view>
@@ -148,10 +147,10 @@ const goToNew = () => {
     </view>
 
     <view
-      class="fixed right-4 bottom-20 w-14 h-14 bg-primary rounded-full center shadow-lg"
+      class="fixed bottom-20 right-4 h-14 w-14 center rounded-full bg-primary shadow-lg"
       @tap="goToNew"
     >
-      <text class="i-carbon-add text-white text-2xl" />
+      <text class="i-carbon-add text-2xl text-white" />
     </view>
   </view>
 </template>

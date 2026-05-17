@@ -86,20 +86,23 @@ export function http<T>(options: CustomRequestOptions) {
 
         if (res.statusCode >= 200 && res.statusCode < 300) {
           if (code !== ResultEnum.Success0 && code !== ResultEnum.Success200) {
+            const errorMsg = 'msg' in responseData ? responseData.msg : responseData.message
             uni.showToast({
               icon: 'none',
-              title: responseData.msg || responseData.message || '请求错误',
+              title: errorMsg || '请求错误',
             })
             return reject(responseData.data)
           }
           return resolve(responseData.data)
         }
 
-        !options.hideErrorToast
-        && uni.showToast({
-          icon: 'none',
-          title: (res.data as any).msg || '请求错误',
-        })
+        if (!options.hideErrorToast) {
+          const errorMsg = 'msg' in responseData ? responseData.msg : responseData.message
+          uni.showToast({
+            icon: 'none',
+            title: errorMsg || '请求错误',
+          })
+        }
         reject(res)
       },
       fail(err) {
@@ -120,10 +123,10 @@ export function http<T>(options: CustomRequestOptions) {
  * @param header 请求头，默认为json格式
  * @returns
  */
-export function httpGet<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpGet<T>(url: string, query?: unknown, header?: Record<string, string>, options?: Partial<CustomRequestOptions>) {
   return http<T>({
     url,
-    query,
+    query: query as Record<string, unknown>,
     method: 'GET',
     header,
     ...options,
@@ -138,10 +141,10 @@ export function httpGet<T>(url: string, query?: Record<string, any>, header?: Re
  * @param header 请求头，默认为json格式
  * @returns
  */
-export function httpPost<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpPost<T>(url: string, data?: unknown, query?: unknown, header?: Record<string, string>, options?: Partial<CustomRequestOptions>) {
   return http<T>({
     url,
-    query,
+    query: query as Record<string, unknown>,
     data,
     method: 'POST',
     header,
@@ -151,11 +154,11 @@ export function httpPost<T>(url: string, data?: Record<string, any>, query?: Rec
 /**
  * PUT 请求
  */
-export function httpPut<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpPut<T>(url: string, data?: unknown, query?: unknown, header?: Record<string, string>, options?: Partial<CustomRequestOptions>) {
   return http<T>({
     url,
     data,
-    query,
+    query: query as Record<string, unknown>,
     method: 'PUT',
     header,
     ...options,
@@ -165,10 +168,10 @@ export function httpPut<T>(url: string, data?: Record<string, any>, query?: Reco
 /**
  * DELETE 请求（无请求体，仅 query）
  */
-export function httpDelete<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpDelete<T>(url: string, query?: unknown, header?: Record<string, string>, options?: Partial<CustomRequestOptions>) {
   return http<T>({
     url,
-    query,
+    query: query as Record<string, unknown>,
     method: 'DELETE',
     header,
     ...options,

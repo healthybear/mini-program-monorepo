@@ -1,6 +1,10 @@
 import { getLastPage } from '@/utils'
 import { debounce } from '@/utils/debounce'
 
+// 常量定义
+const LOGIN_PAGE = '/pages/login/index'
+const DEBOUNCE_DELAY = 500 // 防抖延迟（毫秒）
+
 interface ToLoginPageOptions {
   /**
    * 跳转模式, uni.navigateTo | uni.reLaunch
@@ -13,9 +17,6 @@ interface ToLoginPageOptions {
    */
   queryString?: string
 }
-
-// TODO: 自己增加登录页
-const LOGIN_PAGE = '/pages/login/index'
 
 /**
  * 跳转到登录页, 带防抖处理
@@ -41,4 +42,4 @@ export const toLoginPage = debounce((options: ToLoginPageOptions = {}) => {
   else {
     uni.reLaunch({ url })
   }
-}, 500)
+}, DEBOUNCE_DELAY)

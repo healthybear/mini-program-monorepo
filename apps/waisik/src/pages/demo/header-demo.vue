@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import AppBar from '@/components/app-bar/index.vue'
 import type { IconConfig } from '@/components/app-bar/types'
+import AppBar from '@/components/app-bar/index.vue'
 
 definePage({
   style: {
@@ -9,42 +9,42 @@ definePage({
   },
 })
 
-const handleSearch = () => {
+function handleSearch() {
   uni.showToast({
     title: '搜索',
     icon: 'none',
   })
 }
 
-const handleAdd = () => {
+function handleAdd() {
   uni.showToast({
     title: '添加',
     icon: 'none',
   })
 }
 
-const handleFilter = () => {
+function handleFilter() {
   uni.showToast({
     title: '筛选',
     icon: 'none',
   })
 }
 
-const handleSettings = () => {
+function handleSettings() {
   uni.showToast({
     title: '设置',
     icon: 'none',
   })
 }
 
-const handleHelp = () => {
+function handleHelp() {
   uni.showToast({
     title: '帮助',
     icon: 'none',
   })
 }
 
-const handleCustomBack = () => {
+function handleCustomBack() {
   uni.showModal({
     title: '提示',
     content: '确定要返回吗？',

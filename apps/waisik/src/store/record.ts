@@ -1,7 +1,7 @@
 import type { ICreateExploreRecordDto, IExploreRecord, IExploreRecordDetail, IExploreRecordListQuery, IUpdateExploreRecordDto } from '@/api/types/record'
-import { createRecord, deleteRecord, getRecordDetail, getRecordList, updateRecord } from '@/api/record'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { createRecord, deleteRecord, getRecordDetail, getRecordList, updateRecord } from '@/api/record'
 
 export const useRecordStore = defineStore(
   'record',

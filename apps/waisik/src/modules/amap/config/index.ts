@@ -8,6 +8,11 @@
  * 4. 创建新应用，添加 Key（选择 Web 服务）
  */
 
+// 常量定义
+const DEFAULT_POI_PAGE_SIZE = 20 // POI 搜索每页记录数
+const DEFAULT_POI_PAGE = 1 // POI 搜索默认页码
+const DEFAULT_REGEOCODE_RADIUS = 1000 // 逆地理编码搜索半径（米）
+
 export const AMAP_CONFIG = {
   /**
    * 高德地图 Web 服务 API Key
@@ -29,8 +34,8 @@ export const AMAP_CONFIG = {
    * POI 搜索默认参数
    */
   poiSearch: {
-    offset: 20, // 每页记录数
-    page: 1, // 当前页数
+    offset: DEFAULT_POI_PAGE_SIZE, // 每页记录数
+    page: DEFAULT_POI_PAGE, // 当前页数
     extensions: 'all', // 返回结果详细程度：base/all
   },
 
@@ -46,7 +51,7 @@ export const AMAP_CONFIG = {
    */
   regeocode: {
     output: 'JSON',
-    radius: 1000, // 搜索半径（米）
+    radius: DEFAULT_REGEOCODE_RADIUS, // 搜索半径（米）
   },
 }
 

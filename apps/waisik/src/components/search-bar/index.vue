@@ -27,10 +27,10 @@ watch(() => props.modelValue, (newVal) => {
 
 // 是否显示清空按钮
 const showClear = computed(() => {
-  return props.clearable &&
-         !props.disabled &&
-         !props.readonly &&
-         !!inputValue.value
+  return props.clearable
+    && !props.disabled
+    && !props.readonly
+    && !!inputValue.value
 })
 
 // 是否显示右侧区域
@@ -98,12 +98,12 @@ function handleRightIconClick() {
     :style="{ backgroundColor }"
   >
     <!-- 左侧搜索图标 -->
-    <view class="search-icon w-48rpx h-48rpx flex-center">
+    <view class="search-icon h-48rpx w-48rpx flex-center">
       <view class="i-carbon-search text-48rpx text-text-secondary" />
     </view>
 
     <!-- 输入框区域 -->
-    <view class="input-wrapper flex-1 flex items-center mx-16rpx">
+    <view class="input-wrapper mx-16rpx flex flex-1 items-center">
       <input
         v-model="inputValue"
         class="input flex-1"
@@ -116,12 +116,12 @@ function handleRightIconClick() {
         @focus="handleFocus"
         @blur="handleBlur"
         @confirm="handleSearch"
-      />
+      >
 
       <!-- 清空按钮 -->
       <view
         v-if="showClear"
-        class="clear-button w-40rpx h-40rpx flex-center rounded-full bg-[#d0d0d0] active:opacity-70 transition-opacity ml-8rpx"
+        class="clear-button ml-8rpx h-40rpx w-40rpx flex-center rounded-full bg-[#d0d0d0] transition-opacity active:opacity-70"
         @click="handleClear"
       >
         <view class="i-carbon-close text-32rpx text-white" />
@@ -131,7 +131,7 @@ function handleRightIconClick() {
     <!-- 分割线 -->
     <view
       v-if="showDivider"
-      class="divider w-1px h-40rpx bg-border-light"
+      class="divider h-40rpx w-1px bg-border-light"
     />
 
     <!-- 右侧区域 -->
@@ -141,7 +141,7 @@ function handleRightIconClick() {
         <!-- 回退到图标 -->
         <view
           v-if="rightIcon"
-          class="icon-button w-48rpx h-48rpx flex-center rounded-full active:bg-hover transition-colors"
+          class="icon-button active:bg-hover h-48rpx w-48rpx flex-center rounded-full transition-colors"
           @click="handleRightIconClick"
         >
           <view :class="`i-carbon-${rightIcon} text-48rpx text-text-secondary`" />

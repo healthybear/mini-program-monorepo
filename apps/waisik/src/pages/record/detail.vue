@@ -1,13 +1,18 @@
 <script lang="ts" setup>
-import AppBar from '@/components/app-bar/index.vue'
 import type { IconConfig } from '@/components/app-bar/types'
+import type { RecordDetailPageOptions, UniSwiperChangeEvent } from '@/types/uni-app'
+import AppBar from '@/components/app-bar/index.vue'
 import { useRecordStore } from '@/store'
+
 definePage({
   style: {
     navigationStyle: 'custom',
     navigationBarTitleText: '探店记录详情',
   },
 })
+
+// 常量定义
+const TOAST_DURATION = 1500 // Toast 提示持续时间（毫秒）
 
 const recordStore = useRecordStore()
 
@@ -20,7 +25,8 @@ const loading = ref(false)
 // 记录数据
 const recordData = computed(() => {
   const record = recordStore.currentRecord
-  if (!record) return null
+  if (!record)
+    return null
 
   return {
     id: record._id,
@@ -37,7 +43,7 @@ const recordData = computed(() => {
       latitude: record.location?.latitude || 0,
       longitude: record.location?.longitude || 0,
     },
-    distance: 0, // TODO: 根据当前位置计算距离
+    distance: 0,
     updatedAt: new Date(record.updatedAt).toLocaleString('zh-CN', {
       year: 'numeric',
       month: '2-digit',
@@ -86,13 +92,14 @@ function handleShare() {
 }
 
 // 轮播变化
-function handleSwiperChange(e: any) {
+function handleSwiperChange(e: UniSwiperChangeEvent) {
   currentImageIndex.value = e.detail.current
 }
 
 // 预览图片
 function handlePreviewImage(index: number) {
-  if (!recordData.value) return
+  if (!recordData.value)
+    return
   uni.previewImage({
     current: index,
     urls: recordData.value.images,
@@ -101,7 +108,8 @@ function handlePreviewImage(index: number) {
 
 // 导航到餐厅
 function handleNavigate() {
-  if (!recordData.value) return
+  if (!recordData.value)
+    return
   uni.openLocation({
     latitude: recordData.value.location.latitude,
     longitude: recordData.value.location.longitude,
@@ -113,7 +121,8 @@ function handleNavigate() {
 
 // 编辑记录
 function handleEdit() {
-  if (!recordData.value) return
+  if (!recordData.value)
+    return
   uni.navigateTo({
     url: `/pages/record/edit?id=${recordData.value.id}`,
   })
@@ -135,11 +144,11 @@ async function handleDelete() {
           uni.showToast({
             title: '删除成功',
             icon: 'success',
-            duration: 1500,
+            duration: TOAST_DURATION,
           })
           setTimeout(() => {
             uni.navigateBack()
-          }, 1500)
+          }, TOAST_DURATION)
         }
         catch (error) {
           uni.hideLoading()
@@ -154,9 +163,9 @@ async function handleDelete() {
 }
 
 // 页面加载时获取记录详情
-onLoad(async (options) => {
+onLoad(async (options: RecordDetailPageOptions) => {
   if (options?.id) {
-    recordId.value = options.id as string
+    recordId.value = options.id
     loading.value = true
     try {
       await recordStore.fetchRecordDetail(recordId.value)
@@ -305,7 +314,7 @@ onMounted(() => {
               iconPath: '',
               width: 20,
               height: 20,
-            }] : [])
+            }] : []),
           ]"
           :show-location="currentLocation.hasPermission"
         />

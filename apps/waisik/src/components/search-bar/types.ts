@@ -31,9 +31,9 @@ export interface SearchBarEmits {
   /** v-model 更新事件 */
   (e: 'update:modelValue', value: string): void
   /** 聚焦事件 */
-  (e: 'focus', event: any): void
+  (e: 'focus', event: FocusEvent): void
   /** 失焦事件 */
-  (e: 'blur', event: any): void
+  (e: 'blur', event: FocusEvent): void
   /** 搜索确认事件（键盘搜索按钮） */
   (e: 'search', value: string): void
   /** 清空事件 */

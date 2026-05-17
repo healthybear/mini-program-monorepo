@@ -22,7 +22,6 @@ export const useUserStore = defineStore(
     const userInfo = ref<IUserInfoRes>({ ...userInfoState })
 
     const setUserInfo = (val: IUserInfoRes) => {
-      console.log('设置用户信息', val)
       if (!val.avatar) {
         val.avatar = userInfoState.avatar
       }
@@ -31,8 +30,6 @@ export const useUserStore = defineStore(
 
     const setUserAvatar = (avatar: string) => {
       userInfo.value.avatar = avatar
-      console.log('设置用户头像', avatar)
-      console.log('userInfo', userInfo.value)
     }
 
     const clearUserInfo = () => {

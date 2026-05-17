@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { reactive, ref, computed, onUnmounted } from 'vue'
-import { useTokenStore } from '@/store/token'
+import type { LoginPageOptions } from '@/types/uni-app'
+import { computed, onUnmounted, reactive, ref } from 'vue'
 import { sendVerificationCode } from '@/api/login'
+import { useTokenStore } from '@/store/token'
 
 definePage({
   style: {
@@ -9,6 +10,13 @@ definePage({
     navigationBarBackgroundColor: '#ffffff',
   },
 })
+
+// 常量定义
+const COUNTDOWN_SECONDS = 60 // 验证码倒计时秒数
+const VERIFICATION_CODE_LENGTH = 6 // 验证码长度
+const PHONE_NUMBER_LENGTH = 11 // 手机号长度
+const COUNTDOWN_INTERVAL = 1000 // 倒计时间隔（毫秒）
+const LOGIN_SUCCESS_DELAY = 500 // 登录成功后跳转延迟（毫秒）
 
 // 表单数据
 const formData = reactive({
@@ -27,7 +35,7 @@ let timer: ReturnType<typeof setInterval> | null = null
 const redirectPath = ref('')
 
 // 获取重定向参数
-onLoad((options: any) => {
+onLoad((options: LoginPageOptions) => {
   if (options?.redirect) {
     redirectPath.value = decodeURIComponent(options.redirect)
   }
@@ -35,7 +43,8 @@ onLoad((options: any) => {
 
 // 手机号验证
 const phoneError = computed(() => {
-  if (!formData.phone) return ''
+  if (!formData.phone)
+    return ''
   if (!/^1[3-9]\d{9}$/.test(formData.phone)) {
     return '请输入正确的手机号'
   }
@@ -62,12 +71,13 @@ const loginDisabled = computed(() => {
 
 // 发送验证码
 async function handleSendCode() {
-  if (sendCodeDisabled.value) return
+  if (sendCodeDisabled.value)
+    return
 
   sending.value = true
   try {
     await sendVerificationCode(formData.phone, 'login')
-    countdown.value = 60
+    countdown.value = COUNTDOWN_SECONDS
     startCountdown()
     uni.showToast({ title: '验证码已发送', icon: 'success' })
   }
@@ -82,14 +92,15 @@ async function handleSendCode() {
 
 // 倒计时
 function startCountdown() {
-  if (timer) clearInterval(timer)
+  if (timer)
+    clearInterval(timer)
   timer = setInterval(() => {
     countdown.value--
     if (countdown.value <= 0) {
       clearInterval(timer!)
       timer = null
     }
-  }, 1000)
+  }, COUNTDOWN_INTERVAL)
 }
 
 // 登录
@@ -99,8 +110,8 @@ async function handleLogin() {
     uni.showToast({ title: phoneError.value, icon: 'none' })
     return
   }
-  if (!formData.code || formData.code.length !== 6) {
-    uni.showToast({ title: '请输入6位验证码', icon: 'none' })
+  if (!formData.code || formData.code.length !== VERIFICATION_CODE_LENGTH) {
+    uni.showToast({ title: `请输入${VERIFICATION_CODE_LENGTH}位验证码`, icon: 'none' })
     return
   }
   if (!formData.agreedToTerms) {
@@ -137,7 +148,7 @@ async function handleLogin() {
           uni.reLaunch({ url: '/pages/index/index' })
         }
       }
-    }, 500)
+    }, LOGIN_SUCCESS_DELAY)
   }
   catch (error) {
     uni.hideLoading()
@@ -161,9 +172,15 @@ onUnmounted(() => {
   <view class="login-page">
     <!-- Logo 区域 -->
     <view class="logo-section">
-      <view class="logo-icon">📱</view>
-      <view class="logo-title">欢迎使用 Waisik</view>
-      <view class="logo-subtitle">手机号登录即可开始探店之旅</view>
+      <view class="logo-icon">
+        📱
+      </view>
+      <view class="logo-title">
+        欢迎使用 Waisik
+      </view>
+      <view class="logo-subtitle">
+        手机号登录即可开始探店之旅
+      </view>
     </view>
 
     <!-- 表单区域 -->
@@ -173,7 +190,7 @@ onUnmounted(() => {
         <wd-input
           v-model="formData.phone"
           type="number"
-          maxlength="11"
+          :maxlength="PHONE_NUMBER_LENGTH"
           placeholder="请输入手机号"
           clearable
           :error="!!phoneError"
@@ -186,7 +203,7 @@ onUnmounted(() => {
         <wd-input
           v-model="formData.code"
           type="number"
-          maxlength="6"
+          :maxlength="VERIFICATION_CODE_LENGTH"
           placeholder="请输入验证码"
           clearable
         />

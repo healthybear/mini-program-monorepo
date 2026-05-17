@@ -1,4 +1,4 @@
-import type { IAuthLoginRes, ICaptcha, IDoubleTokenRes, IUpdateInfo, IUpdatePassword, IUserInfoRes, ISendCodeReq, ISendCodeRes, IPhoneLoginReq } from './types/login'
+import type { IAuthLoginRes, ICaptcha, IDoubleTokenRes, IPhoneLoginReq, ISendCodeReq, ISendCodeRes, IUpdateInfo, IUpdatePassword, IUserInfoRes } from './types/login'
 import { http } from '@/http/http'
 
 /**

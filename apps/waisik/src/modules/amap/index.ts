@@ -10,11 +10,11 @@
 // API
 export * from './api'
 
-// 类型
-export * from './types'
+// 组件
+export { default as LocationPicker } from './components/location-picker.vue'
 
 // 配置
 export * from './config'
 
-// 组件
-export { default as LocationPicker } from './components/location-picker.vue'
+// 类型
+export * from './types'

@@ -50,10 +50,7 @@ onLoad(() => {
   needHideNativeTabbar
   && uni.hideTabBar({
     fail(err) {
-      console.log('hideTabBar fail: ', err)
-    },
-    success(res) {
-      // console.log('hideTabBar success: ', res)
+      console.error('hideTabBar fail: ', err)
     },
   })
 })
@@ -65,10 +62,7 @@ onMounted(() => {
   customTabbarEnable // 另外，支付宝里面，只要是 customTabbar 都需要隐藏
   && uni.hideTabBar({
     fail(err) {
-      console.log('hideTabBar fail: ', err)
-    },
-    success(res) {
-      // console.log('hideTabBar success: ', res)
+      console.error('hideTabBar fail: ', err)
     },
   })
 })
@@ -86,7 +80,7 @@ function getColorByIndex(index: number) {
       <view class="h-50px flex items-center">
         <view
           v-for="(item, index) in tabbarList" :key="index"
-          class="flex flex-1 flex-col items-center justify-center"
+          class="flex flex-col flex-1 items-center justify-center"
           :style="{ color: getColorByIndex(index) }"
           @click="handleClick(index)"
         >

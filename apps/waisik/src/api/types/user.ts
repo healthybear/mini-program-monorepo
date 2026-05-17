@@ -3,9 +3,6 @@
  * 用户相关接口类型定义
  */
 
-import type { IExploreRecord, IExploreRecordListResponse } from './record'
-import type { IFavorite, IFavoriteListResponse } from './favorite'
-
 export interface IUserInfo {
   id: string
   nickname: string

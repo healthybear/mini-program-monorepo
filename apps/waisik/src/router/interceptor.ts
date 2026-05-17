@@ -1,3 +1,4 @@
+import { useTokenStore } from '@/store/token'
 /**
  * by 菲鸽 on 2025-08-19
  * 路由拦截，通常也是登录拦截
@@ -5,7 +6,6 @@
  */
 import { tabbarStore } from '@/tabbar/store'
 import { getLastPage, parseUrlToObj } from '@/utils/index'
-import { useTokenStore } from '@/store/token'
 import { toLoginPage } from '@/utils/toLoginPage'
 
 export const FG_LOG_ENABLE = false
@@ -24,12 +24,7 @@ export const navigateToInterceptor = {
     }
     let { path, query: _query } = parseUrlToObj(url)
 
-    FG_LOG_ENABLE && console.log('\n\n路由拦截器:-------------------------------------')
-    FG_LOG_ENABLE && console.log('路由拦截器 1: url->', url, ', query ->', query)
     const myQuery = { ..._query, ...query }
-    // /pages/route-interceptor/index?name=feige&age=30
-    FG_LOG_ENABLE && console.log('路由拦截器 2: path->', path, ', _query ->', _query)
-    FG_LOG_ENABLE && console.log('路由拦截器 3: myQuery ->', myQuery)
 
     // 处理相对路径
     if (!path.startsWith('/')) {
@@ -39,18 +34,6 @@ export const navigateToInterceptor = {
       path = `${baseDir}/${path}`
     }
 
-    // // 处理路由不存在的情况
-    // if (path !== '/' && !getAllPages().some(page => page.path === path)) {
-    //   console.warn('路由不存在:', path)
-    //   return false // 明确表示阻止原路由继续执行
-    // }
-
-    // // 插件页面
-    // if (url.startsWith('plugin://')) {
-    //   FG_LOG_ENABLE && console.log('路由拦截器 4: plugin:// 路径 ==>', url)
-    //   path = url
-    // }
-
     // 登录状态检查
     const isInWhitelist = LOGIN_WHITELIST.some(whitePath => path.startsWith(whitePath))
     if (!isInWhitelist) {
@@ -58,7 +41,6 @@ export const navigateToInterceptor = {
       const hasLogin = tokenStore.updateNowTime().hasLogin
 
       if (!hasLogin) {
-        console.log('路由拦截器: 未登录，跳转到登录页')
         toLoginPage({
           mode: 'navigateTo',
           queryString: `?redirect=${encodeURIComponent(path)}`,

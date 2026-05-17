@@ -10,7 +10,7 @@ interface UseScrollReturn<T> {
   list: Ref<T[]>
   loading: Ref<boolean>
   finished: Ref<boolean>
-  error: Ref<any>
+  error: Ref<Error | null>
   refresh: () => Promise<void>
   loadMore: () => Promise<void>
 }
@@ -22,7 +22,7 @@ export function useScroll<T>({
   const list = ref<T[]>([]) as Ref<T[]>
   const loading = ref(false)
   const finished = ref(false)
-  const error = ref<any>(null)
+  const error = ref<Error | null>(null)
   const page = ref(1)
 
   const loadData = async () => {
@@ -41,7 +41,7 @@ export function useScroll<T>({
       page.value++
     }
     catch (err) {
-      error.value = err
+      error.value = err instanceof Error ? err : new Error(String(err))
     }
     finally {
       loading.value = false

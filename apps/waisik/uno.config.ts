@@ -50,7 +50,6 @@ export default defineConfig({
         ),
       },
     }),
-    // TODO: check 是否会有别的影响
     // 处理低端安卓机的样式问题
     // 将颜色函数 (rgb()和hsl()) 从空格分隔转换为逗号分隔，更好的兼容性app端，example：
     // `rgb(255 0 0)` -> `rgb(255, 0, 0)`
@@ -71,7 +70,7 @@ export default defineConfig({
   shortcuts: [
     // 布局相关
     {
-      center: 'flex justify-center items-center',
+      'center': 'flex justify-center items-center',
       'flex-center': 'flex justify-center items-center',
       'flex-col-center': 'flex flex-col justify-center items-center',
       'flex-between': 'flex justify-between items-center',
@@ -177,12 +176,12 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      primary: designTokens.colors.primary,
-      success: designTokens.colors.success,
-      warning: designTokens.colors.warning,
-      danger: designTokens.colors.danger,
-      error: designTokens.colors.error,
-      info: designTokens.colors.info,
+      'primary': designTokens.colors.primary,
+      'success': designTokens.colors.success,
+      'warning': designTokens.colors.warning,
+      'danger': designTokens.colors.danger,
+      'error': designTokens.colors.error,
+      'info': designTokens.colors.info,
 
       'text-primary': designTokens.colors.textPrimary,
       'text-secondary': designTokens.colors.textSecondary,

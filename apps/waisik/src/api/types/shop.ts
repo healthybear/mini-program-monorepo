@@ -6,7 +6,7 @@
  * - 后端路径：E:\workspace\uni-admin-node\src\projects\waisik\types\shop.types.ts
  */
 
-import type { ILocation, IPaginationQuery, IPaginationResponse, EntityStatus, SortBy } from './common'
+import type { EntityStatus, ILocation, IPaginationQuery, IPaginationResponse, SortBy } from './common'
 
 /**
  * 店铺标签

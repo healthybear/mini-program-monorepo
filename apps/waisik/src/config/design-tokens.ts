@@ -55,20 +55,20 @@ export const designTokens = {
 
   /** 间距系统 */
   spacing: {
-    xs: '8rpx',
-    sm: '12rpx',
-    base: '16rpx',
-    md: '20rpx',
-    lg: '24rpx',
-    xl: '32rpx',
+    'xs': '8rpx',
+    'sm': '12rpx',
+    'base': '16rpx',
+    'md': '20rpx',
+    'lg': '24rpx',
+    'xl': '32rpx',
     '2xl': '40rpx',
     '3xl': '48rpx',
 
     // 语义化间距
-    item: '12rpx',
-    section: '16rpx',
-    card: '24rpx',
-    page: '32rpx',
+    'item': '12rpx',
+    'section': '16rpx',
+    'card': '24rpx',
+    'page': '32rpx',
   },
 
   /** 圆角 */

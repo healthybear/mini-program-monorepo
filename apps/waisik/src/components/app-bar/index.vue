@@ -68,7 +68,7 @@ function handleOverflowClick(index: number, icon: IconConfig) {
     <!-- 左侧图标区域（仅当 showBackIcon 为 true 时显示） -->
     <view v-if="showBackIcon" class="left-area">
       <view
-        class="icon-button w-48rpx h-48rpx flex-center rounded-full active:bg-hover transition-colors"
+        class="icon-button active:bg-hover h-48rpx w-48rpx flex-center rounded-full transition-colors"
         @click="handleLeftClick"
       >
         <view :class="`i-carbon-${leftIcon}`" class="text-48rpx text-text-primary" />
@@ -86,7 +86,7 @@ function handleOverflowClick(index: number, icon: IconConfig) {
       <view
         v-for="(icon, index) in visibleIcons"
         :key="index"
-        class="icon-button w-48rpx h-48rpx flex-center rounded-full active:bg-hover transition-colors"
+        class="icon-button active:bg-hover h-48rpx w-48rpx flex-center rounded-full transition-colors"
         :class="{ 'ml-24rpx': index > 0 }"
         @click="handleRightIconClick(index, icon)"
       >
@@ -105,14 +105,14 @@ function handleOverflowClick(index: number, icon: IconConfig) {
             <view
               v-for="(icon, index) in overflowIcons"
               :key="index"
-              class="menu-item h-88rpx flex-center active:bg-hover transition-colors"
+              class="menu-item active:bg-hover h-88rpx flex-center transition-colors"
               @click="handleOverflowClick(index + 2, icon)"
             >
               <view :class="`i-carbon-${icon.icon}`" class="text-48rpx text-text-primary" />
             </view>
           </view>
         </template>
-        <view class="icon-button w-48rpx h-48rpx flex-center rounded-full active:bg-hover transition-colors ml-24rpx">
+        <view class="icon-button active:bg-hover ml-24rpx h-48rpx w-48rpx flex-center rounded-full transition-colors">
           <view class="i-carbon-overflow-menu-vertical text-48rpx text-text-primary" />
         </view>
       </wd-popover>

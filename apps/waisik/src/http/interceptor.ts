@@ -11,10 +11,6 @@ const baseUrl = getEnvBaseUrl()
  */
 const httpInterceptor = {
   invoke(options: CustomRequestOptions) {
-    // 如果使用 alova，此拦截器会被 alova 的拦截器调用
-    // 执行流程：alova beforeRequest --> 本拦截器 --> alova responded
-    // return options
-
     // 处理 query 参数，转换为 URL queryString
     if (options.query) {
       const queryStr = stringifyQuery(options.query)
