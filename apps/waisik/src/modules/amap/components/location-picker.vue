@@ -273,6 +273,7 @@ onMounted(() => {
       </view>
 
       <!-- 地图 -->
+      <!-- #ifndef H5 -->
       <view class="map-container">
         <map
           class="map-view"
@@ -283,6 +284,18 @@ onMounted(() => {
           @tap="handleMapTap"
         />
       </view>
+      <!-- #endif -->
+
+      <!-- H5 环境提示 -->
+      <!-- #ifdef H5 -->
+      <view class="map-placeholder">
+        <view class="placeholder-icon">
+          <view class="i-carbon-location icon-large" />
+        </view>
+        <view class="placeholder-text">H5 环境暂不支持地图选点</view>
+        <view class="placeholder-hint">请使用搜索功能选择位置</view>
+      </view>
+      <!-- #endif -->
 
       <!-- 选中位置信息 -->
       <view v-if="selectedLocation" class="selected-info">
@@ -427,6 +440,36 @@ onMounted(() => {
   .info-address {
     font-size: 24rpx;
     color: #646566;
+  }
+}
+
+.map-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fa;
+
+  .placeholder-icon {
+    margin-bottom: 16rpx;
+
+    .icon-large {
+      width: 96rpx;
+      height: 96rpx;
+      color: #c8c9cc;
+    }
+  }
+
+  .placeholder-text {
+    font-size: 28rpx;
+    color: #646566;
+    margin-bottom: 8rpx;
+  }
+
+  .placeholder-hint {
+    font-size: 24rpx;
+    color: #969799;
   }
 }
 </style>

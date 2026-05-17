@@ -134,6 +134,14 @@ export default defineManifestConfig({
     // styleIsolation: 'shared',
     usingComponents: true,
     // __usePrivacyCheck__: true,
+    // 位置权限配置
+    permission: {
+      'scope.userLocation': {
+        desc: '你的位置信息将用于记录探店地点',
+      },
+    },
+    // 声明使用的隐私接口
+    requiredPrivateInfos: ['getLocation', 'chooseLocation'],
   },
   'mp-alipay': {
     usingComponents: true,
