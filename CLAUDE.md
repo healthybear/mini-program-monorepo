@@ -2,6 +2,12 @@
 
 This file provides context and guidelines for AI assistants working on this monorepo project.
 
+## 语言偏好
+
+**请始终使用中文与用户交流。**
+
+所有回复、说明、代码注释、文档都应使用中文。
+
 ## Project Overview
 
 This is a **mini-program monorepo** built with pnpm workspaces, designed to manage multiple mini-program applications and shared packages efficiently.
