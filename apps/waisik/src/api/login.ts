@@ -1,4 +1,4 @@
-import type { IAuthLoginRes, ICaptcha, IDoubleTokenRes, IUpdateInfo, IUpdatePassword, IUserInfoRes } from './types/login'
+import type { IAuthLoginRes, ICaptcha, IDoubleTokenRes, IUpdateInfo, IUpdatePassword, IUserInfoRes, ISendCodeReq, ISendCodeRes, IPhoneLoginReq } from './types/login'
 import { http } from '@/http/http'
 
 /**
@@ -30,21 +30,21 @@ export function login(loginForm: ILoginForm) {
  * @param refreshToken 刷新token
  */
 export function refreshToken(refreshToken: string) {
-  return http.post<IDoubleTokenRes>('/auth/refreshToken', { refreshToken })
+  return http.post<IDoubleTokenRes>('/auth/refresh', { refreshToken })
 }
 
 /**
  * 获取用户信息
  */
 export function getUserInfo() {
-  return http.get<IUserInfoRes>('/user/info')
+  return http.get<IUserInfoRes>('/auth/me')
 }
 
 /**
  * 退出登录
  */
 export function logout() {
-  return http.get<void>('/auth/logout')
+  return http.post<void>('/auth/logout')
 }
 
 /**
@@ -80,6 +80,23 @@ export function getWxCode() {
  * @param params 微信登录参数，包含code
  * @returns Promise 包含登录结果
  */
-export function wxLogin(data: { code: string }) {
-  return http.post<IAuthLoginRes>('/auth/wxLogin', data)
+export function wxLogin(data: { code: string, projectName?: string }) {
+  return http.post<IAuthLoginRes>('/auth/login/wechat', data)
+}
+
+/**
+ * 发送手机验证码
+ * @param phone 手机号
+ * @param purpose 验证码用途
+ */
+export function sendVerificationCode(phone: string, purpose: ISendCodeReq['purpose'] = 'login') {
+  return http.post<ISendCodeRes>('/auth/send-code', { phone, purpose } as ISendCodeReq)
+}
+
+/**
+ * 手机号+验证码登录
+ * @param data 登录数据
+ */
+export function phoneLogin(data: IPhoneLoginReq) {
+  return http.post<IAuthLoginRes>('/auth/login/phone', data)
 }

@@ -11,8 +11,8 @@ export interface ISingleTokenRes {
 export interface IDoubleTokenRes {
   accessToken: string
   refreshToken: string
-  accessExpiresIn: number // 访问令牌有效期(秒)
-  refreshExpiresIn: number // 刷新令牌有效期(秒)
+  expiresIn: number // 访问令牌有效期(秒)
+  user?: IUserInfoRes // 用户信息（登录时返回）
 }
 
 /**
@@ -33,6 +33,13 @@ export interface IUserInfoRes {
   /** 同时支持单角色和多角色，你自行选择一种就行 */
   role?: UserRole
   roles?: UserRole[]
+  id?: string
+  phone?: string
+  avatarUrl?: string
+  globalRole?: string
+  projectRoles?: Record<string, string>
+  status?: string
+  createdAt?: string
   [key: string]: any // 允许其他扩展字段
 }
 
@@ -51,6 +58,32 @@ export interface ICaptcha {
   captchaEnabled: boolean
   uuid: string
   image: string
+}
+
+/**
+ * 发送验证码请求
+ */
+export interface ISendCodeReq {
+  phone: string
+  purpose: 'login' | 'register' | 'reset_password' | 'bind_phone' | 'unbind_phone' | 'change_phone'
+}
+
+/**
+ * 发送验证码响应
+ */
+export interface ISendCodeRes {
+  success: boolean
+  message?: string
+  expiresIn?: number // 验证码有效期（秒）
+}
+
+/**
+ * 手机号登录请求
+ */
+export interface IPhoneLoginReq {
+  phone: string
+  code: string
+  projectName: string
 }
 /**
  * 上传成功的信息

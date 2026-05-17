@@ -1,9 +1,25 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { navigateToInterceptor } from '@/router/interceptor'
+import { useTokenStore } from '@/store'
 
-onLaunch((options) => {
+onLaunch(async (options) => {
   console.log('App.vue onLaunch', options)
+
+  // 微信小程序自动登录
+  // #ifdef MP-WEIXIN
+  const tokenStore = useTokenStore()
+  if (!tokenStore.updateNowTime().hasLogin) {
+    try {
+      console.log('检测到未登录，尝试微信自动登录...')
+      await tokenStore.wxLogin()
+      console.log('微信自动登录成功')
+    }
+    catch (error) {
+      console.error('微信自动登录失败:', error)
+    }
+  }
+  // #endif
 })
 onShow((options) => {
   console.log('App.vue onShow', options)

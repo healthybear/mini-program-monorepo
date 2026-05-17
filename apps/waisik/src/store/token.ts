@@ -1,7 +1,10 @@
 import type {
   ILoginForm,
 } from '@/api/login'
-import type { IAuthLoginRes } from '@/api/types/login'
+import type {
+  IPhoneLoginReq,
+  IAuthLoginRes,
+} from '@/api/types/login'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue' // 修复：导入 computed
 import {
@@ -9,6 +12,7 @@ import {
   logout as _logout,
   refreshToken as _refreshToken,
   wxLogin as _wxLogin,
+  phoneLogin as _phoneLogin,
   getWxCode,
 } from '@/api/login'
 import { isDoubleTokenRes, isSingleTokenRes } from '@/api/types/login'
@@ -19,9 +23,8 @@ import { useUserStore } from './user'
 const tokenInfoState = isDoubleTokenMode
   ? {
       accessToken: '',
-      accessExpiresIn: 0,
+      expiresIn: 0,
       refreshToken: '',
-      refreshExpiresIn: 0,
     }
   : {
       token: '',
@@ -61,9 +64,10 @@ export const useTokenStore = defineStore(
       }
       else if (isDoubleTokenRes(val)) {
         // 双token模式
-        const accessExpireTime = now + val.accessExpiresIn * 1000
-        const refreshExpireTime = now + val.refreshExpiresIn * 1000
+        const accessExpireTime = now + val.expiresIn * 1000
         uni.setStorageSync('accessTokenExpireTime', accessExpireTime)
+        // 如果后端没有返回 refreshToken 的过期时间，默认设置为 30 天
+        const refreshExpireTime = now + 30 * 24 * 60 * 60 * 1000
         uni.setStorageSync('refreshTokenExpireTime', refreshExpireTime)
       }
     }
@@ -164,6 +168,35 @@ export const useTokenStore = defineStore(
         console.error('微信登录失败:', error)
         uni.showToast({
           title: '微信登录失败，请重试',
+          icon: 'error',
+        })
+        throw error
+      }
+      finally {
+        updateNowTime()
+      }
+    }
+
+    /**
+     * 手机号验证码登录
+     * @param loginForm 登录参数
+     * @returns 登录结果
+     */
+    const phoneLogin = async (loginForm: IPhoneLoginReq) => {
+      try {
+        const res = await _phoneLogin(loginForm)
+        console.log('手机登录-res: ', res)
+        await _postLogin(res)
+        uni.showToast({
+          title: '登录成功',
+          icon: 'success',
+        })
+        return res
+      }
+      catch (error) {
+        console.error('手机登录失败:', error)
+        uni.showToast({
+          title: '登录失败，请重试',
           icon: 'error',
         })
         throw error
@@ -297,6 +330,7 @@ export const useTokenStore = defineStore(
       // 核心API方法
       login,
       wxLogin,
+      phoneLogin,
       logout,
 
       // 认证状态判断（最常用的）

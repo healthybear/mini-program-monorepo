@@ -25,7 +25,13 @@ const refreshing = ref(false)
 
 onLoad(async () => {
   console.log('测试 uni API 自动引入: onLoad')
-  await recordStore.fetchRecords(true)
+  try {
+    await recordStore.fetchRecords(true)
+  }
+  catch (error) {
+    console.error('首页加载数据失败:', error)
+    // HTTP 拦截器会自动处理 401 错误并跳转到登录页
+  }
 })
 
 const onRefresh = async () => {

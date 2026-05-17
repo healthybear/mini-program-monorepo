@@ -5,8 +5,15 @@
  */
 import { tabbarStore } from '@/tabbar/store'
 import { getLastPage, parseUrlToObj } from '@/utils/index'
+import { useTokenStore } from '@/store/token'
+import { toLoginPage } from '@/utils/toLoginPage'
 
 export const FG_LOG_ENABLE = false
+
+// 不需要登录的页面白名单
+const LOGIN_WHITELIST = [
+  '/pages/login/index',
+]
 
 export const navigateToInterceptor = {
   // 注意，这里的url是 '/' 开头的，如 '/pages/index/index'，跟 'pages.json' 里面的 path 不同
@@ -43,6 +50,22 @@ export const navigateToInterceptor = {
     //   FG_LOG_ENABLE && console.log('路由拦截器 4: plugin:// 路径 ==>', url)
     //   path = url
     // }
+
+    // 登录状态检查
+    const isInWhitelist = LOGIN_WHITELIST.some(whitePath => path.startsWith(whitePath))
+    if (!isInWhitelist) {
+      const tokenStore = useTokenStore()
+      const hasLogin = tokenStore.updateNowTime().hasLogin
+
+      if (!hasLogin) {
+        console.log('路由拦截器: 未登录，跳转到登录页')
+        toLoginPage({
+          mode: 'navigateTo',
+          queryString: `?redirect=${encodeURIComponent(path)}`,
+        })
+        return false
+      }
+    }
 
     // 处理直接进入路由非首页时，tabbarIndex 不正确的问题
     tabbarStore.setAutoCurIdx(path)
