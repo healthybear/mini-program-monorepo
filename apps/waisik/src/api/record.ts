@@ -23,7 +23,7 @@ export function createRecord(data: ICreateExploreRecordDto) {
  * @returns Promise<IExploreRecordListResponse> 探店记录列表
  */
 export function getRecordList(params: IExploreRecordListQuery) {
-  return http.get<IExploreRecordListResponse>('/api/v1/waisik/explore-records', { params })
+  return http.get<IExploreRecordListResponse>('/api/v1/waisik/explore-records', params)
 }
 
 /**
